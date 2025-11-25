@@ -1,21 +1,46 @@
 plugins {
     id 'java'
+    id 'war'
 }
 
 group = 'org.store'
 version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+
     implementation files('lib/ojdbc11-21.9.0.0.jar')
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring MVC
+    implementation 'org.springframework:spring-webmvc:6.0.15'
+    implementation 'org.springframework:spring-context:6.0.15'
+
+    // JSTL для JSP
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+
+    // Servlet API
+    providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+
+    // Логирование
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    runtimeOnly 'org.slf4j:slf4j-simple:2.0.9'
 }
 
-test {
-    useJUnitPlatform()
+war {
+    archiveFileName = 'store.war'
+    from('lib') { include '*.jar' }
 }

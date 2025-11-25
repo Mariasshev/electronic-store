@@ -11,13 +11,21 @@ public class DBConnection {
 
     public static Connection getConnection() {
         try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            // Настройки подключения
             Properties props = new Properties();
             props.put("user", "SYS");
             props.put("password", "1");
             props.put("internal_logon", "SYSDBA");
 
+            // Соединение
             return DriverManager.getConnection(URL, props);
 
+        } catch (ClassNotFoundException e) {
+            System.out.println("Oracle JDBC Driver not found!");
+            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (SQLException e) {
             System.out.println("Failed to connect to Oracle DB!");
             e.printStackTrace();
