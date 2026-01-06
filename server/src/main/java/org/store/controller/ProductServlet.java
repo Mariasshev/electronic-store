@@ -42,7 +42,6 @@ public class ProductServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Credentials", "true");
     }
 
-
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
         setCorsHeaders(resp);
@@ -74,7 +73,6 @@ public class ProductServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

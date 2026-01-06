@@ -35,7 +35,6 @@ public class ProductDAO {
         return products;
     }
 
-
     public List<Product> findWithFilters(Long categoryId, List<String> brands, Map<String, List<String>> specsFilters) {
         List<Product> products = new ArrayList<>();
 

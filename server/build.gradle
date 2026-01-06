@@ -41,6 +41,8 @@ dependencies {
     implementation 'org.mindrot:jbcrypt:0.4'
 
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
 }
 
 war {
