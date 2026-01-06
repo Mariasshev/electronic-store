@@ -9,11 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.store.dao.ProductDAO;
 import org.store.model.Product;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet("/api/products") // Хороший тон: API эндпоинты начинать с /api
+@WebServlet("/api/products")
 public class ProductServlet extends HttpServlet {
 
     private ProductDAO productDAO;
@@ -25,64 +28,119 @@ public class ProductServlet extends HttpServlet {
         gson = new Gson();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Налаштування CORS
+    private void setCorsHeaders(HttpServletResponse resp) {
+        // Дозволяємо запити з React-фронтенду
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
 
-        String idParam = req.getParameter("id");          // Для одного товара
-        String categoryIdParam = req.getParameter("categoryId"); // НОВЫЙ ПАРАМЕТР
+        // Дозволяємо методи
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
-        String jsonResponse = "";
+        // Дозволяємо заголовки
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-        try (PrintWriter out = resp.getWriter()) {
-            if (idParam != null) {
-                // Логика получения одного товара (как мы делали раньше)
-                Long id = Long.parseLong(idParam);
-                Product product = productDAO.findById(id);
-                jsonResponse = gson.toJson(product);
-            } else if (categoryIdParam != null) {
-                // НОВАЯ ЛОГИКА: Фильтр по категории
-                Long catId = Long.parseLong(categoryIdParam);
-                List<Product> products = productDAO.findByCategoryId(catId);
-                jsonResponse = gson.toJson(products);
-            } else {
-                // Если параметров нет — возвращаем ВСЕ товары
-                List<Product> products = productDAO.findAll();
-                jsonResponse = gson.toJson(products);
-            }
-            out.print(jsonResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.setStatus(500);
+        // Дозволяємо передачу кукі/авторизації
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+    }
+
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
+        setCorsHeaders(resp);
+        resp.setStatus(200);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        setCorsHeaders(resp);
+
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = req.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) sb.append(line);
         }
 
+        try {
+            Product newProduct = gson.fromJson(sb.toString(), Product.class);
 
-        try (PrintWriter out = resp.getWriter()) {
-            if (idParam != null && !idParam.isEmpty()) {
-                // ВАРІАНТ 1: Якщо є ID — шукаємо один товар
-                Long id = Long.parseLong(idParam);
-                Product product = productDAO.findById(id);
+            if (productDAO.createProductFull(newProduct)) {
+                resp.getWriter().write("{\"message\": \"Product created successfully\"}");
+            } else {
+                resp.setStatus(500);
+                resp.getWriter().write("{\"error\": \"Database error\"}");
+            }
+        } catch (Exception e) {
+            resp.setStatus(400);
+            resp.getWriter().write("{\"error\": \"Invalid JSON format\"}");
+            e.printStackTrace();
+        }
+    }
 
-                if (product != null) {
-                    jsonResponse = gson.toJson(product); // <--- Повертаємо ОБ'ЄКТ
-                } else {
-                    resp.setStatus(404);
-                    jsonResponse = "{}";
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        setCorsHeaders(resp);
+        resp.setContentType("application/json;charset=UTF-8");
+
+        String idParam = req.getParameter("id");
+        String searchParam = req.getParameter("q");
+        String categoryParam = req.getParameter("categoryId");
+
+        System.out.println("--- ProductServlet GET Request ---");
+        System.out.println("Query String: " + req.getQueryString());
+
+        // 1. Пошук
+        if (searchParam != null && !searchParam.trim().isEmpty()) {
+            List<Product> products = productDAO.searchByName(searchParam);
+            resp.getWriter().write(gson.toJson(products));
+            return;
+        }
+
+        // 2. Один товар
+        if (idParam != null) {
+            Product product = productDAO.findById(Long.parseLong(idParam));
+            if (product != null) {
+                resp.getWriter().write(gson.toJson(product));
+            } else {
+                resp.setStatus(404);
+                resp.getWriter().write("{}");
+            }
+            return;
+        }
+
+        // 3. Категорія + ФІЛЬТРИ (Catalog Page)
+        if (categoryParam != null) {
+            long catId = Long.parseLong(categoryParam);
+
+            // Зчитуємо бренди
+            String[] brandParams = req.getParameterValues("brand");
+            List<String> brands = brandParams != null ? java.util.Arrays.asList(brandParams) : new ArrayList<>();
+            System.out.println("Selected Brands: " + brands);
+
+            // Зчитуємо характеристики
+            Map<String, List<String>> specs = new java.util.HashMap<>();
+            java.util.Enumeration<String> parameterNames = req.getParameterNames();
+            while (parameterNames.hasMoreElements()) {
+                String paramName = parameterNames.nextElement();
+                if (paramName.startsWith("spec_")) {
+                    String key = paramName.substring(5);
+                    String[] values = req.getParameterValues(paramName);
+                    if (values != null) {
+                        specs.put(key, java.util.Arrays.asList(values));
+                    }
                 }
-            } else {
-                // ВАРІАНТ 2: Якщо ID немає — повертаємо список
-                List<Product> products = productDAO.findAll();
-                jsonResponse = gson.toJson(products); // <--- Повертаємо МАСИВ
             }
-            out.print(jsonResponse);
-        } catch (Exception e) {
-            resp.setStatus(500);
-            e.printStackTrace();
+            System.out.println("Selected Specs: " + specs);
+
+            // Викликаємо метод з фільтрами
+            List<Product> products = productDAO.findWithFilters(catId, brands, specs);
+            System.out.println("Found products: " + products.size());
+
+            resp.getWriter().write(gson.toJson(products));
+            return;
         }
+
+        // 4. Інакше - повертаємо всі товари (якщо нічого не вибрано)
+        List<Product> products = productDAO.findAll();
+        resp.getWriter().write(gson.toJson(products));
     }
 }

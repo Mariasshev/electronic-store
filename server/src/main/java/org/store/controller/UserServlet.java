@@ -18,7 +18,7 @@ public class UserServlet extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
     private Gson gson = new Gson();
 
-    // Налаштування CORS (щоб React міг стукатись)
+    // Налаштування CORS
     private void setCorsHeaders(HttpServletResponse resp) {
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet {
         resp.setStatus(200);
     }
 
-    // ОТРИМАННЯ ДАНИХ (GET /api/user?email=...)
+    // ОТРИМАННЯ ДАНИХ GET
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -48,7 +48,7 @@ public class UserServlet extends HttpServlet {
         User user = userDAO.findByEmail(email);
 
         if (user != null) {
-            // Видаляємо пароль перед відправкою на клієнт (безпека!)
+            // Видаляємо пароль перед відправкою на клієнт
             user.setPassword(null);
             resp.getWriter().write(gson.toJson(user));
         } else {
@@ -57,8 +57,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // ОНОВЛЕННЯ ДАНИХ (PUT /api/user)
-
+    // ОНОВЛЕННЯ ДАНИХ PUT
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -86,7 +85,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
 
-        // --- ЛОГІКА ОНОВЛЕННЯ ПРОФІЛЮ (ЯК БУЛО РАНІШЕ) ---
+        // --- ЛОГІКА ОНОВЛЕННЯ ПРОФІЛЮ ---
         try {
             User userToUpdate = gson.fromJson(json, User.class);
 

@@ -18,7 +18,7 @@ public class AuthServlet extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
     private Gson gson = new Gson();
 
-    // Настройка CORS (чтобы фронт не ругался)
+    // Настройка CORS
     private void setCorsHeaders(HttpServletResponse resp) {
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");

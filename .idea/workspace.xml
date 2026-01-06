@@ -9,50 +9,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add jsp pages">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/electronic-store.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/AddressDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add auth/register, add colors, add memory, add wishlist">
+      <change afterPath="$PROJECT_DIR$/client/public/img/products/apple/MacBook/MacBook-Air-M2/back.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/public/img/products/apple/MacBook/MacBook-Air-M2/main.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/public/img/products/apple/MacBook/MacBook-Air-M2/side.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/public/img/products/apple/MacBook/MacBook-Air-M2/thumb.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/public/img/products/samsung/samsung-galaxy-a55-128/main.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/admin/add-product/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/SearchBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/context/CartContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/FilterServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/CartDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dto/FilterDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/CartItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/account/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/account/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/auth/register/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/cart/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/product/ProductTop.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/product/ProductTop.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/context/WishlistContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ojdbc11-21.9.0.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/dao/DBConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/dao/UserDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/model/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/model/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/model/OrderItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/model/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/model/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/store/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/dispatcher-servlet.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/ProductServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/ProductServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/ProductDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/ProductDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductColor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductColor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductMemory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductMemory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,37 +116,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Gradle.Build electronic-store.executor": "Run",
-    "Gradle.Build server.executor": "Run",
-    "Gradle.electronic-store [:org.store.Main.main()].executor": "Run",
-    "Gradle.electronic-store.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Tomcat Server.Tomcat 11.0.14.executor": "Run",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Documents/JAVA/electronic-store",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/Admin/Downloads/spring-mvc-main/spring-mvc-main/electronic-store/src/main/java/org/store/Main.java",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.build",
-    "ts.external.directory.path": "C:\\Users\\Admin\\Documents\\JAVA\\electronic-store\\client\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build electronic-store.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.electronic-store [:org.store.Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.electronic-store.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.Tomcat 11.0.14.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/Documents/JAVA/electronic-store&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Admin/Downloads/spring-mvc-main/spring-mvc-main/electronic-store/src/main/java/org/store/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Admin\\Documents\\JAVA\\electronic-store\\client\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -343,7 +334,8 @@
       <workItem from="1764520190287" duration="1233000" />
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
-      <workItem from="1767490686625" duration="15500000" />
+      <workItem from="1767490686625" duration="16474000" />
+      <workItem from="1767698092284" duration="6681000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -369,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764075243815</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add auth/register, add colors, add memory, add wishlist">
+      <option name="closed" value="true" />
+      <created>1767573144743</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1767573144743</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,10 +387,13 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="start" />
     <MESSAGE value="add DB Connection" />
     <MESSAGE value="add jsp pages" />
-    <option name="LAST_COMMIT_MESSAGE" value="add jsp pages" />
+    <MESSAGE value="add auth/register, add colors, add memory, add wishlist" />
+    <option name="LAST_COMMIT_MESSAGE" value="add auth/register, add colors, add memory, add wishlist" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

@@ -8,12 +8,12 @@ import java.sql.*;
 
 public class UserDAO {
 
-    // --- РЕГИСТРАЦИЯ ---
+    // --- (Registration) ---
     public boolean registerUser(User user) {
         // 1. Генерируем соль и хешируем пароль
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-        // 2. Вставляем в базу (ID генерируется сам, CREATED_AT тоже)
+        // 2. Вставляем в базу
         String sql = "INSERT INTO elstore_users (username, email, password, role) VALUES (?, ?, ?, 'CLIENT')";
 
         try (Connection conn = DBConnection.getConnection();
@@ -21,17 +21,17 @@ public class UserDAO {
 
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getEmail());
-            pstmt.setString(3, hashedPassword); // В базу пишем ТОЛЬКО хеш
+            pstmt.setString(3, hashedPassword);
 
             int rows = pstmt.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Скорее всего такой email уже есть
+            return false;
         }
     }
 
-    // --- ВХОД (LOGIN) ---
+    // --- (LOGIN) ---
     public User loginUser(String email, String rawPassword) {
         String sql = "SELECT * FROM elstore_users WHERE email = ?";
 
@@ -44,7 +44,7 @@ public class UserDAO {
             if (rs.next()) {
                 String storedHash = rs.getString("password");
 
-                // 3. Сверяем введенный пароль с хешем из базы
+                // 3. проверка паролья с хешем из базы
                 if (BCrypt.checkpw(rawPassword, storedHash)) {
                     User user = new User();
                     user.setId(rs.getLong("id"));
@@ -75,11 +75,8 @@ public class UserDAO {
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
                 user.setRole(rs.getString("role"));
-
-                // --- ДОДАНО: Читаємо телефон та адресу ---
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
-                // ----------------------------------------
 
                 return user;
             }
@@ -89,7 +86,7 @@ public class UserDAO {
         return null;
     }
 
-    // 2. ОНОВЛЕННЯ ПРОФІЛЮ (Для сторінки "Edit Profile")
+    // Edit Profile
     public boolean updateUser(User user) {
         // Оновлюємо ім'я, адресу та телефон
         String sql = "UPDATE elstore_users SET username = ?, address = ?, phone = ? WHERE email = ?";
@@ -126,7 +123,7 @@ public class UserDAO {
                 // 2. Перевіряємо, чи співпадає старий пароль
                 if (BCrypt.checkpw(oldPassword, currentHash)) {
 
-                    // 3. Якщо так - хешуємо новий пароль і оновлюємо БД
+                    // 3. хешуємо новий пароль і оновлюємо БД
                     String newHash = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
                     try (PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {

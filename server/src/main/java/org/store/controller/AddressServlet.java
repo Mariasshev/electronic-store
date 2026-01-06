@@ -31,7 +31,7 @@ public class AddressServlet extends HttpServlet {
         resp.setStatus(200);
     }
 
-    // GET: Отримати список адрес (передаємо ?userId=...)
+    // GET: Отримати список адрес
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -65,7 +65,7 @@ public class AddressServlet extends HttpServlet {
         }
     }
 
-    // DELETE: Видалити адресу (передаємо ?id=...)
+    // DELETE: Видалити адресу
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);

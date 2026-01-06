@@ -3,7 +3,7 @@ package org.store.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.store.config.DBConnection;
-import org.store.model.Product; // Твій клас Product
+import org.store.model.Product;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -42,7 +42,6 @@ public class WishlistServlet extends HttpServlet {
 
         List<Product> products = new ArrayList<>();
 
-        // Робимо JOIN, щоб отримати дані про товари, які є у вішлисті
         String sql = "SELECT p.* FROM elstore_products p " +
                 "JOIN elstore_wishlist w ON p.id = w.product_id " +
                 "WHERE w.user_id = ?";
@@ -59,7 +58,6 @@ public class WishlistServlet extends HttpServlet {
                 p.setName(rs.getString("name"));
                 p.setPrice(rs.getBigDecimal("price"));
                 p.setImageUrl(rs.getString("image_url"));
-                // Інші поля можна не заповнювати, для картки цього достатньо
                 products.add(p);
             }
         } catch (Exception e) {
@@ -75,7 +73,6 @@ public class WishlistServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
 
-        // Читаємо JSON { "userId": 1, "productId": 5 }
         StringBuilder sb = new StringBuilder();
         try (java.io.BufferedReader reader = req.getReader()) {
             String line;
@@ -98,7 +95,7 @@ public class WishlistServlet extends HttpServlet {
             resp.getWriter().write("{\"message\": \"Added to wishlist\"}");
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            // Якщо товар вже є у вішлисті - це не помилка, просто повертаємо ОК
+            // Якщо товар вже є у вішлисті - повертаємо ОК
             resp.getWriter().write("{\"message\": \"Already in wishlist\"}");
         } catch (SQLException e) {
             resp.setStatus(500);

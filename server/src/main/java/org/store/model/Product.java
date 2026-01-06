@@ -16,12 +16,12 @@ public class Product {
     private Long categoryId;
     private String categoryName;
     private String brandName;
+    private Long brandId;
 
     private List<String> gallery = new ArrayList<>();
     private Map<String, String> specifications = new HashMap<>();
     private List<ProductColor> colors = new ArrayList<>();
 
-    // 1. Додаємо список для пам'яті
     private List<ProductMemory> memoryOptions = new ArrayList<>();
 
     public Product() {}
@@ -32,7 +32,14 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    // --- Геттери та Сеттери ---
+    // Getters / Setters
+    public Long getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
+    }
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
@@ -43,9 +50,8 @@ public class Product {
     public List<ProductColor> getColors() { return colors; }
     public void setColors(List<ProductColor> colors) { this.colors = colors; }
 
-    // 2. Геттер і Сеттер для пам'яті
-    public List<ProductMemory> getMemoryOptions() { return memoryOptions; } // <--- НОВЕ
-    public void setMemoryOptions(List<ProductMemory> memoryOptions) { this.memoryOptions = memoryOptions; } // <--- НОВЕ
+    public List<ProductMemory> getMemoryOptions() { return memoryOptions; }
+    public void setMemoryOptions(List<ProductMemory> memoryOptions) { this.memoryOptions = memoryOptions; }
 
     public List<String> getGallery() { return gallery; }
     public void setGallery(List<String> gallery) { this.gallery = gallery; }
@@ -79,7 +85,6 @@ public class Product {
     }
 
     // --- Внутрішні класи ---
-
     public static class ProductColor {
         private String name;
         private String hex;
@@ -96,7 +101,7 @@ public class Product {
         public int getQuantity() { return quantity; }
     }
 
-    // 3. Клас для опису пам'яті
+    // 3. опис пам'яті
     public static class ProductMemory {
         private String size;
         private BigDecimal priceModifier;
@@ -108,7 +113,6 @@ public class Product {
             this.quantity = quantity;
         }
 
-        // ОБЯЗАТЕЛЬНО ДОБАВЬ ЭТИ СТРОКИ:
         public String getSize() { return size; }
         public BigDecimal getPriceModifier() { return priceModifier; }
         public int getQuantity() { return quantity; }
