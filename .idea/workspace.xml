@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="Add .nojekyll file to fix GitHub Pages build">
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="fix">
       <change afterPath="$PROJECT_DIR$/client/src/app/favicon.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
@@ -137,6 +137,7 @@
       <recent name="C:\Users\Admin\Downloads\spring-mvc-main\spring-mvc-main\electronic-store\lib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Documents\JAVA\electronic-store" />
       <recent name="C:\Users\Admin\Downloads\spring-mvc-main\spring-mvc-main\electronic-store\src\main\webapp\WEB-INF" />
       <recent name="C:\Users\Admin\Downloads\spring-mvc-main\spring-mvc-main\electronic-store\src\main\webapp" />
     </key>
@@ -390,7 +391,7 @@
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
-      <workItem from="1767698092284" duration="25076000" />
+      <workItem from="1767698092284" duration="25664000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -480,7 +481,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767792824357</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix">
+      <option name="closed" value="true" />
+      <created>1767793219083</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1767793219083</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,7 +519,8 @@
     <MESSAGE value="add comments" />
     <MESSAGE value="add docs" />
     <MESSAGE value="Add .nojekyll file to fix GitHub Pages build" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add .nojekyll file to fix GitHub Pages build" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
