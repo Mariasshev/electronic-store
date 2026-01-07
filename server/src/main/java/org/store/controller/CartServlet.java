@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Servlet implementation class CartServlet.
  * Manages the user's shopping cart via the endpoint {@code /api/cart}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>GET:</b> Retrieve current cart items (requires {@code userId}).</li>
@@ -24,7 +23,6 @@ import java.util.List;
  * <li><b>PUT:</b> Update item quantity (requires JSON body).</li>
  * <li><b>DELETE:</b> Remove an item (requires {@code userId} and {@code productId}).</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/cart")
 public class CartServlet extends HttpServlet {

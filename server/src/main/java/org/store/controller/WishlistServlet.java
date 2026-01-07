@@ -16,14 +16,12 @@ import java.util.List;
 /**
  * Servlet implementation class WishlistServlet.
  * Manages the user's list of favorite products via the endpoint {@code /api/wishlist}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>GET:</b> Retrieve all products in the wishlist (requires {@code userId}).</li>
  * <li><b>POST:</b> Add a product to the wishlist (requires JSON body).</li>
  * <li><b>DELETE:</b> Remove a product (requires {@code userId} and {@code productId}).</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/wishlist")
 public class WishlistServlet extends HttpServlet {

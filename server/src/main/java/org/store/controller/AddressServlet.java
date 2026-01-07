@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * Servlet implementation class AddressServlet.
  * Manages user shipping addresses via the endpoint {@code /api/addresses}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>GET:</b> Retrieve all addresses for a specific user (requires {@code userId} parameter).</li>
@@ -25,7 +24,6 @@ import java.util.List;
  * <li><b>DELETE:</b> Remove an address (requires {@code id} parameter).</li>
  * <li><b>OPTIONS:</b> Handle CORS preflight requests.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/addresses/*")
 public class AddressServlet extends HttpServlet {

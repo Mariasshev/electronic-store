@@ -15,14 +15,12 @@ import java.io.IOException;
 /**
  * Servlet implementation class UserServlet.
  * Manages user profile operations at the endpoint {@code /api/user}.
- * <p>
  * Supported operations:
  * <ul>
  * <li>GET: Retrieve user profile details by email.</li>
  * <li>PUT: Update user profile information OR change password.</li>
  * <li>OPTIONS: Handle CORS preflight requests.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/user")
 public class UserServlet extends HttpServlet {
@@ -110,13 +108,11 @@ public class UserServlet extends HttpServlet {
 
     /**
      * Handles PUT requests for updating user data.
-     * <p>
      * This method supports two distinct operations based on the JSON payload:
      * <ol>
      * <li><b>Password Change:</b> If payload contains {@code currentPassword} and {@code newPassword}.</li>
      * <li><b>Profile Update:</b> If payload contains standard user fields (address, phone, name).</li>
      * </ol>
-     * </p>
      *
      * @param req  HttpServletRequest containing the JSON payload.
      * @param resp HttpServletResponse.

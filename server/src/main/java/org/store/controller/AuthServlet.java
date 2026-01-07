@@ -15,13 +15,11 @@ import java.io.IOException;
 /**
  * Servlet implementation class AuthServlet.
  * Handles authentication and registration requests via the endpoint {@code /api/auth/*}.
- * <p>
  * Supported routes:
  * <ul>
  * <li>{@code /api/auth/register} - Creates a new user account.</li>
  * <li>{@code /api/auth/login} - Authenticates existing users.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/auth/*")
 public class AuthServlet extends HttpServlet {

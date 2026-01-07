@@ -16,14 +16,12 @@ import java.util.List;
 /**
  * Servlet implementation class UserCardServlet.
  * Manages user payment methods via the endpoint {@code /api/cards}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>GET:</b> Retrieve saved cards for a specific user.</li>
  * <li><b>POST:</b> Add a new card (Only stores the last 4 digits and brand).</li>
  * <li><b>DELETE:</b> Remove a saved card.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/cards")
 public class UserCardServlet extends HttpServlet {

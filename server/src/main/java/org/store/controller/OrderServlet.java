@@ -17,14 +17,12 @@ import java.util.List;
 /**
  * Servlet implementation class OrderServlet.
  * Manages order processing via the endpoint {@code /api/orders}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>GET:</b> Retrieve order history for a specific user (requires {@code userId}).</li>
  * <li><b>POST:</b> Create a new order (checkout) based on the user's cart.</li>
  * <li><b>OPTIONS:</b> Handle CORS preflight requests.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/orders")
 public class OrderServlet extends HttpServlet {

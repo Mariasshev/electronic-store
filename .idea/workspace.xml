@@ -9,13 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add comments">
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add docs">
       <change afterPath="$PROJECT_DIR$/client/src/app/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -389,7 +398,7 @@
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
-      <workItem from="1767698092284" duration="23754000" />
+      <workItem from="1767698092284" duration="24382000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -455,7 +464,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767791546774</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add docs">
+      <option name="closed" value="true" />
+      <created>1767792073429</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767792073429</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +500,8 @@
     <MESSAGE value="add api calls, add order, add card" />
     <MESSAGE value="add unit tests" />
     <MESSAGE value="add comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="add comments" />
+    <MESSAGE value="add docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="add docs" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

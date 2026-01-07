@@ -12,13 +12,11 @@ import java.io.IOException;
 /**
  * Servlet implementation class PromoCodeServlet.
  * Handles promotional code validation via the endpoint {@code /api/promo}.
- * <p>
  * Supported operations:
  * <ul>
  * <li><b>POST:</b> Validate a promo code. Expects JSON: {@code {"code": "SUMMER2024"}}</li>
  * <li><b>OPTIONS:</b> Handle CORS preflight requests.</li>
  * </ul>
- * </p>
  */
 @WebServlet("/api/promo")
 public class PromoCodeServlet extends HttpServlet {
