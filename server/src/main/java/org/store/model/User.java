@@ -1,19 +1,63 @@
 package org.store.model;
-
 import java.sql.Timestamp;
 
+/**
+ * Entity class representing a registered User in the system.
+ * <p>
+ * This class maps to the {@code elstore_users} table in the database.
+ * It stores authentication details (hashed password), contact information,
+ * and the user's role (permissions).
+ * </p>
+ */
 public class User {
+    /** Unique identifier for the user (Primary Key) */
     private Long id;
+
+    /** Display name of the user */
     private String username;
+
+    /**
+     * Encrypted password hash.
+     * <p><b>Security Note:</b> Plain text passwords should never be stored here permanently.</p>
+     */
     private String password;
+
+    /** User's email address, acting as the unique login identifier */
     private String email;
-    private  String phone;
+
+    /** Contact phone number */
+    private String phone;
+
+    /** Physical address for delivery */
     private String address;
-    private String role; // "ADMIN" or "CLIENT"
+
+    /**
+     * Authorization role.
+     * <p>Expected values:</p>
+     * <ul>
+     * <li>"ADMIN" - Has full access to manage products and view orders.</li>
+     * <li>"CLIENT" - Can browse products and make purchases.</li>
+     * </ul>
+     */
+    private String role;
+
+    /** Timestamp of account creation */
     private Timestamp createdAt;
 
+    /**
+     * Default constructor.
+     * Required for serialization/deserialization libraries (e.g., Gson) and reflection.
+     */
     public User() {}
 
+    /**
+     * Constructs a new User with essential registration details.
+     *
+     * @param username The display name.
+     * @param email    The unique email address.
+     * @param password The raw password (which should be hashed before saving) or the hashed password.
+     * @param role     The access role (usually 'CLIENT' for new registrations).
+     */
     public User(String username, String email, String password, String role) {
         this.username = username;
         this.password = password;

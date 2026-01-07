@@ -9,30 +9,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add api calls, add order, add card">
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add unit tests">
       <change afterPath="$PROJECT_DIR$/client/src/app/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/java/org/store/controller/CurrencyServletTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/java/org/store/controller/ProductServletTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/WishlistDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/controller/CurrencyServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/controller/CurrencyServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/dao/ProductDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/dao/ProductDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductColor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductColor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductMemory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductMemory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CurrencyServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CurrencyServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/FilterServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/FilterServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/AddressDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/AddressDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/CartDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/CartDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/OrderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/OrderDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dto/CurrencyRate.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dto/CurrencyRate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/PromoCodeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/PromoCodeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserCardDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserCardDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Category.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -406,7 +411,7 @@
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
-      <workItem from="1767698092284" duration="20477000" />
+      <workItem from="1767698092284" duration="23453000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -456,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767743981414</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add unit tests">
+      <option name="closed" value="true" />
+      <created>1767787006055</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1767787006055</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +495,8 @@
     <MESSAGE value="add auth/register, add colors, add memory, add wishlist" />
     <MESSAGE value="add catalog filters" />
     <MESSAGE value="add api calls, add order, add card" />
-    <option name="LAST_COMMIT_MESSAGE" value="add api calls, add order, add card" />
+    <MESSAGE value="add unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="add unit tests" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

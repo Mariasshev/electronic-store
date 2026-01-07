@@ -12,24 +12,74 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+
+/**
+ * Servlet implementation class UserCardServlet.
+ * Manages user payment methods via the endpoint {@code /api/cards}.
+ * <p>
+ * Supported operations:
+ * <ul>
+ * <li><b>GET:</b> Retrieve saved cards for a specific user.</li>
+ * <li><b>POST:</b> Add a new card (Only stores the last 4 digits and brand).</li>
+ * <li><b>DELETE:</b> Remove a saved card.</li>
+ * </ul>
+ * </p>
+ */
 @WebServlet("/api/cards")
 public class UserCardServlet extends HttpServlet {
     private UserCardDAO cardDAO = new UserCardDAO();
     private Gson gson = new Gson();
 
+    /**
+     * Default constructor for the Servlet container (Tomcat).
+     * Initializes dependencies with real implementations.
+     */
+    public UserCardServlet() {
+        this.cardDAO = new UserCardDAO();
+        this.gson = new Gson();
+    }
+
+    /**
+     * Constructor for Unit Testing.
+     * Allows injection of Mock objects.
+     *
+     * @param cardDAO Mock or real UserCardDAO.
+     * @param gson Mock or real Gson.
+     */
+    public UserCardServlet(UserCardDAO cardDAO, Gson gson) {
+        this.cardDAO = cardDAO;
+        this.gson = gson;
+    }
+
+    /**
+     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
+     *
+     * @param resp The HTTP response object.
+     */
     private void setCorsHeaders(HttpServletResponse resp) {
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 
+
+    /**
+     * Handles CORS Preflight requests.
+     */
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
         setCorsHeaders(resp);
         resp.setStatus(200);
     }
 
-    // GET: Отримати картки
+    /**
+     * Handles GET requests to retrieve saved cards.
+     * Expects a {@code userId} query parameter.
+     *
+     * @param req  HttpServletRequest containing {@code userId}.
+     * @param resp HttpServletResponse containing the list of cards in JSON.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -42,7 +92,19 @@ public class UserCardServlet extends HttpServlet {
         }
     }
 
-    // POST: Додати картку
+    /**
+     * Handles POST requests to save a new card.
+     * <p>
+     * Logic:
+     * 1. Receives full card details (simulated, as real processing requires PCI DSS compliance).
+     * 2. Determines the brand (Visa/Mastercard) based on the first digit.
+     * 3. Extracts only the last 4 digits for storage.
+     * </p>
+     *
+     * @param req  HttpServletRequest containing card JSON.
+     * @param resp HttpServletResponse.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -60,7 +122,7 @@ public class UserCardServlet extends HttpServlet {
         String brand = "MASTERCARD";
         if (number.startsWith("4")) brand = "VISA";
 
-        // Беремо останні 4 цифри
+        // останні 4 цифри
         String last4 = number.length() >= 4 ? number.substring(number.length() - 4) : number;
 
         UserCard card = new UserCard(
@@ -79,7 +141,14 @@ public class UserCardServlet extends HttpServlet {
         }
     }
 
-    // DELETE: Видалити картку
+    /**
+     * Handles DELETE requests to remove a card.
+     * Expects an {@code id} query parameter.
+     *
+     * @param req  HttpServletRequest containing the card ID.
+     * @param resp HttpServletResponse.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);

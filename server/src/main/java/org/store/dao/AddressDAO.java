@@ -6,9 +6,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Data Access Object (DAO) for managing User Shipping Addresses.
+ * <p>
+ * This class handles CRUD operations for the {@code elstore_addresses} table.
+ * It allows users to store multiple delivery addresses (e.g., "Home", "Work")
+ * to speed up the checkout process.
+ * </p>
+ */
 public class AddressDAO {
 
-    // Отримати всі адреси конкретного користувача
+    /**
+     * Retrieves all saved addresses for a specific user.
+     * The results are ordered by ID in descending order, so the most recently
+     * added address appears first in the list.
+     *
+     * @param userId The unique identifier of the user.
+     * @return A {@link List} of {@link Address} objects. Returns an empty list if no addresses are found.
+     */
     public List<Address> findByUserId(Long userId) {
         List<Address> list = new ArrayList<>();
         String sql = "SELECT * FROM elstore_addresses WHERE user_id = ? ORDER BY id DESC";
@@ -34,7 +50,12 @@ public class AddressDAO {
         return list;
     }
 
-    // Додати нову адресу
+    /**
+     * Adds a new shipping address to the user's profile.
+     *
+     * @param addr The {@link Address} object containing details (label, address line, phone).
+     * @return {@code true} if the address was successfully inserted into the database; {@code false} otherwise.
+     */
     public boolean addAddress(Address addr) {
         String sql = "INSERT INTO elstore_addresses (user_id, label, address_line, phone) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -52,7 +73,12 @@ public class AddressDAO {
         }
     }
 
-    // Видалити адресу
+    /**
+     * Permanently removes an address from the user's profile.
+     *
+     * @param addressId The unique identifier (Primary Key) of the address to delete.
+     * @return {@code true} if the deletion was successful (i.e., the row existed); {@code false} otherwise.
+     */
     public boolean deleteAddress(Long addressId) {
         String sql = "DELETE FROM elstore_addresses WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();

@@ -36,7 +36,7 @@ public class CurrencyServlet extends HttpServlet {
             resp.getWriter().write(jsonOutput);
 
         } catch (Exception e) {
-            e.printStackTrace(); // Це покаже помилку в консолі, якщо вона є
+            e.printStackTrace();
             resp.getWriter().write("[]");
         }
     }

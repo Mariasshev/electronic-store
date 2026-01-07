@@ -7,9 +7,35 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for managing customer Orders.
+ * <p>
+ * This class handles the complex logic of the checkout process, including
+ * transaction management to ensure data integrity when moving items
+ * from the shopping cart to the final order records.
+ * </p>
+ */
 public class OrderDAO {
 
-    // СТВОРЕННЯ ЗАМОВЛЕННЯ (ТРАНЗАКЦІЯ)
+    /**
+     * Creates a new order based on the user's current shopping cart.
+     * <p>
+     * <b>Transaction Management:</b> This method executes as a single atomic transaction.
+     * It performs three steps:
+     * <ol>
+     * <li>Creates a record in {@code elstore_orders} with status 'PAID'.</li>
+     * <li>Copies all items from {@code elstore_cart} to {@code elstore_order_items}, preserving the price at the moment of purchase.</li>
+     * <li>Clears the user's shopping cart ({@code elstore_cart}).</li>
+     * </ol>
+     * If any step fails, the entire operation is rolled back to prevent data inconsistency.
+     * </p>
+     *
+     * @param userId      The ID of the user placing the order.
+     * @param address     The shipping address.
+     * @param phone       The contact phone number.
+     * @param totalAmount The total cost of the order (calculated on the server or client).
+     * @return true if the order was successfully created and the cart cleared; false otherwise.
+     */
     public boolean createOrder(Long userId, String address, String phone, BigDecimal totalAmount) {
         Connection conn = null;
         try {
@@ -66,7 +92,13 @@ public class OrderDAO {
         }
     }
 
-    // ОТРИМАННЯ СПИСКУ ЗАМОВЛЕНЬ ЮЗЕРА
+    /**
+     * Retrieves the order history for a specific user.
+     * The list is sorted by creation date in descending order (newest orders first).
+     *
+     * @param userId The ID of the user.
+     * @return A List of {@link Order} objects, each containing its associated list of purchased items.
+     */
     public List<Order> getUserOrders(Long userId) {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM elstore_orders WHERE user_id = ? ORDER BY created_at DESC";
@@ -84,7 +116,6 @@ public class OrderDAO {
                 order.setStatus(rs.getString("status"));
                 order.setCreatedAt(rs.getTimestamp("created_at"));
 
-                // Для кожного замовлення підтягуємо товари (можна оптимізувати, але для початку так ОК)
                 order.setItems(getOrderItems(order.getId(), conn));
 
                 orders.add(order);
@@ -95,6 +126,15 @@ public class OrderDAO {
         return orders;
     }
 
+    /**
+     * Helper method to retrieve individual items associated with a specific order.
+     * Joins with the products table to get current names and images.
+     *
+     * @param orderId The ID of the order.
+     * @param conn    The active database connection (reused from the parent method).
+     * @return A list of {@link Order.OrderItem} containing product details and purchase price.
+     * @throws SQLException If a database access error occurs.
+     */
     private List<Order.OrderItem> getOrderItems(Long orderId, Connection conn) throws SQLException {
         List<Order.OrderItem> items = new ArrayList<>();
         String sql = "SELECT oi.quantity, oi.price_at_purchase, p.name, p.image_url " +

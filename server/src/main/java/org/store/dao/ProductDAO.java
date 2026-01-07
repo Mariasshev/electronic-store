@@ -8,8 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Data Access Object (DAO) for Product operations.
+ * Handles all database interactions related to products.
+ */
 public class ProductDAO {
 
+    /**
+     * Retrieves all products from the database.
+     * @return List of all products.
+     */
     public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM elstore_products";
@@ -38,6 +46,13 @@ public class ProductDAO {
         return products;
     }
 
+    /**
+     * Filters products based on category, brands, and specifications.
+     * * @param categoryId The ID of the category.
+     * @param brands List of brand names to filter by.
+     * @param specsFilters Map of specifications (Key -> List of Values).
+     * @return List of filtered products.
+     */
     public List<Product> findWithFilters(Long categoryId, List<String> brands, Map<String, List<String>> specsFilters) {
         List<Product> products = new ArrayList<>();
 
@@ -116,6 +131,20 @@ public class ProductDAO {
         return products;
     }
 
+
+    /**
+     * Retrieves available filter options (brands and technical specifications) for a specific category.
+     * This method is essential for populating the dynamic filter sidebar on the frontend.
+     *
+     * <p>The method performs two distinct database operations:</p>
+     * <ol>
+     * <li>Fetches distinct brand names associated with products in the given category.</li>
+     * <li>Fetches distinct specification keys and values (e.g., "Color" -> ["Red", "Blue"]) for products in the category.</li>
+     * </ol>
+     *
+     * @param categoryId The unique identifier of the category to fetch filters for.
+     * @return A {@link org.store.dto.FilterDTO} object containing the list of brands and the map of specifications.
+     */
     public org.store.dto.FilterDTO getFiltersByCategory(Long categoryId) {
         List<String> brands = new ArrayList<>();
         Map<String, List<String>> specs = new java.util.HashMap<>();
@@ -151,6 +180,11 @@ public class ProductDAO {
         return new org.store.dto.FilterDTO(brands, specs);
     }
 
+    /**
+     * Searches for products by name using a LIKE query.
+     * @param query The search string.
+     * @return List of matching products (limit 5).
+     */
     public List<Product> searchByName(String query) {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT id, name, price, old_price, image_url FROM elstore_products " +
@@ -179,6 +213,14 @@ public class ProductDAO {
         return products;
     }
 
+
+    /**
+     * Retrieves all products belonging to a specific category without additional filtering.
+     * This method performs a basic lookup joining products with their category and brand information.
+     *
+     * @param categoryId The unique identifier of the category.
+     * @return A List of {@link Product} objects found in the specified category.
+     */
     public List<Product> findByCategoryId(Long categoryId) {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT p.*, c.name AS category_name, b.name AS brand_name " +
@@ -205,6 +247,11 @@ public class ProductDAO {
         return products;
     }
 
+    /**
+     * Creates a new product with all details.
+     * @param product Product object to save.
+     * @return true if created successfully.
+     */
     public boolean createProductFull(Product product) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -297,6 +344,12 @@ public class ProductDAO {
         }
     }
 
+
+    /**
+     * Finds a single product by its ID including details like gallery and specs.
+     * @param id Product ID.
+     * @return Product object or null if not found.
+     */
     public Product findById(Long id) {
         Product product = null;
 
@@ -389,6 +442,10 @@ public class ProductDAO {
         return product;
     }
 
+
+    /**
+     * Helper method to map ResultSet to Product object.
+     */
     private Product mapProduct(ResultSet rs) throws SQLException {
         Product product = new Product();
         product.setId(rs.getLong("id"));

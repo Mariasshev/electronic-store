@@ -2,133 +2,178 @@ package org.store.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.store.config.DBConnection;
+import org.store.dao.WishlistDAO;
 import org.store.model.Product;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet implementation class WishlistServlet.
+ * Manages the user's list of favorite products via the endpoint {@code /api/wishlist}.
+ * <p>
+ * Supported operations:
+ * <ul>
+ * <li><b>GET:</b> Retrieve all products in the wishlist (requires {@code userId}).</li>
+ * <li><b>POST:</b> Add a product to the wishlist (requires JSON body).</li>
+ * <li><b>DELETE:</b> Remove a product (requires {@code userId} and {@code productId}).</li>
+ * </ul>
+ * </p>
+ */
 @WebServlet("/api/wishlist")
 public class WishlistServlet extends HttpServlet {
 
-    private Gson gson = new Gson();
+    private WishlistDAO wishlistDAO;
+    private Gson gson;
 
+    /**
+     * Default constructor for the Servlet container (Tomcat).
+     * Initializes dependencies with real implementations.
+     */
+    public WishlistServlet() {
+        this.wishlistDAO = new WishlistDAO();
+        this.gson = new Gson();
+    }
+
+    /**
+     * Constructor for Unit Testing.
+     * Allows injection of Mock objects.
+     *
+     * @param wishlistDAO Mock or real WishlistDAO.
+     * @param gson Mock or real Gson.
+     */
+    public WishlistServlet(WishlistDAO wishlistDAO, Gson gson) {
+        this.wishlistDAO = wishlistDAO;
+        this.gson = gson;
+    }
+
+    /**
+     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
+     *
+     * @param resp The HTTP response object.
+     */
     private void setCorsHeaders(HttpServletResponse resp) {
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 
+    /**
+     * Handles CORS Preflight requests.
+     */
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
         setCorsHeaders(resp);
-        resp.setStatus(200);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
-    // GET: Отримати всі ТОВАРИ з вішлиста користувача
+    /**
+     * Handles GET requests to retrieve the wishlist.
+     * Expects a {@code userId} query parameter.
+     *
+     * @param req  HttpServletRequest containing {@code userId}.
+     * @param resp HttpServletResponse containing the list of Products in JSON.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
         resp.setContentType("application/json;charset=UTF-8");
 
         String userIdParam = req.getParameter("userId");
-        if (userIdParam == null) { resp.getWriter().write("[]"); return; }
-
-        List<Product> products = new ArrayList<>();
-
-        String sql = "SELECT p.* FROM elstore_products p " +
-                "JOIN elstore_wishlist w ON p.id = w.product_id " +
-                "WHERE w.user_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setLong(1, Long.parseLong(userIdParam));
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getLong("id"));
-                p.setName(rs.getString("name"));
-                p.setPrice(rs.getBigDecimal("price"));
-                p.setImageUrl(rs.getString("image_url"));
-                products.add(p);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (userIdParam == null) {
+            resp.getWriter().write("[]");
+            return;
         }
 
-        resp.getWriter().write(gson.toJson(products));
+        try {
+            long userId = Long.parseLong(userIdParam);
+            List<Product> products = wishlistDAO.getWishlist(userId);
+            resp.getWriter().write(gson.toJson(products));
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"Invalid userId format\"}");
+        }
     }
 
-
-    // POST: Додати товар у вішлист
+    /**
+     * Handles POST requests to add a product to the wishlist.
+     * Expects JSON body with {@code userId} and {@code productId}.
+     *
+     * @param req  HttpServletRequest containing JSON payload.
+     * @param resp HttpServletResponse.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
 
         StringBuilder sb = new StringBuilder();
-        try (java.io.BufferedReader reader = req.getReader()) {
+        try (BufferedReader reader = req.getReader()) {
             String line;
             while ((line = reader.readLine()) != null) sb.append(line);
         }
 
-        JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-        long userId = json.get("userId").getAsLong();
-        long productId = json.get("productId").getAsLong();
+        try {
+            JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
+            if (!json.has("userId") || !json.has("productId")) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
 
-        String sql = "INSERT INTO elstore_wishlist (user_id, product_id) VALUES (?, ?)";
+            long userId = json.get("userId").getAsLong();
+            long productId = json.get("productId").getAsLong();
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            if (wishlistDAO.addToWishlist(userId, productId)) {
+                resp.getWriter().write("{\"message\": \"Added to wishlist\"}");
+            } else {
+                resp.getWriter().write("{\"message\": \"Already in wishlist or failed\"}");
+            }
 
-            pstmt.setLong(1, userId);
-            pstmt.setLong(2, productId);
-            pstmt.executeUpdate();
-
-            resp.getWriter().write("{\"message\": \"Added to wishlist\"}");
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            // Якщо товар вже є у вішлисті - повертаємо ОК
-            resp.getWriter().write("{\"message\": \"Already in wishlist\"}");
-        } catch (SQLException e) {
-            resp.setStatus(500);
-            e.printStackTrace();
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"Invalid JSON\"}");
         }
     }
 
-    // DELETE: Видалити товар з вішлиста
+    /**
+     * Handles DELETE requests to remove a product from the wishlist.
+     * Expects {@code userId} and {@code productId} query parameters.
+     *
+     * @param req  HttpServletRequest containing query parameters.
+     * @param resp HttpServletResponse.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
 
-        String userId = req.getParameter("userId");
-        String productId = req.getParameter("productId");
+        String userIdParam = req.getParameter("userId");
+        String productIdParam = req.getParameter("productId");
 
-        if (userId == null || productId == null) {
-            resp.setStatus(400);
-            return;
-        }
+        if (userIdParam != null && productIdParam != null) {
+            try {
+                long userId = Long.parseLong(userIdParam);
+                long productId = Long.parseLong(productIdParam);
 
-        String sql = "DELETE FROM elstore_wishlist WHERE user_id = ? AND product_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setLong(1, Long.parseLong(userId));
-            pstmt.setLong(2, Long.parseLong(productId));
-            pstmt.executeUpdate();
-
-            resp.getWriter().write("{\"message\": \"Removed from wishlist\"}");
-        } catch (SQLException e) {
-            resp.setStatus(500);
-            e.printStackTrace();
+                if (wishlistDAO.removeFromWishlist(userId, productId)) {
+                    resp.getWriter().write("{\"message\": \"Removed from wishlist\"}");
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("{\"error\": \"Item not found\"}");
+                }
+            } catch (NumberFormatException e) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("{\"error\": \"Invalid ID format\"}");
+            }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"Missing parameters\"}");
         }
     }
 }

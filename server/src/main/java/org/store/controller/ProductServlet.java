@@ -16,24 +16,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Servlet implementation class ProductServlet.
+ * Handles HTTP requests for Products (/api/products).
+ * Supports GET (fetching products) and POST (creating products).
+ */
 @WebServlet("/api/products")
 public class ProductServlet extends HttpServlet {
 
     private ProductDAO productDAO;
     private Gson gson;
 
+    /**
+     * Default constructor for Tomcat container.
+     * Initializes DAO and Gson with default implementations.
+     */
     public ProductServlet() {
         this.productDAO = new ProductDAO();
         this.gson = new Gson();
     }
 
-    // 2. Конструктор З параметрами (Для ТЕСТІВ)
-    // Ми будемо викликати його в JUnit і передавати туди Mock-об'єкти.
+    /**
+     * Constructor for Unit Testing (Dependency Injection).
+     * @param productDAO Mock or real DAO.
+     * @param gson Mock or real Gson.
+     */
     public ProductServlet(ProductDAO productDAO, Gson gson) {
         this.productDAO = productDAO;
         this.gson = gson;
     }
 
+
+    /**
+     * Sets Cross-Origin Resource Sharing (CORS) headers to allow frontend communication.
+     * Configures the response to accept requests from the React application running on port 3000.
+     * Headers set:
+     * <ul>
+     * <li>Access-Control-Allow-Origin: allows localhost:3000</li>
+     * <li>Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS</li>
+     * <li>Access-Control-Allow-Headers: Content-Type, Authorization</li>
+     * <li>Access-Control-Allow-Credentials: allows cookies/auth headers</li>
+     * </ul>
+     *
+     * @param resp The HttpServletResponse object to modify.
+     */
     private void setCorsHeaders(HttpServletResponse resp) {
         // Дозволяємо запити з React-фронтенду
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -48,12 +74,42 @@ public class ProductServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Credentials", "true");
     }
 
+
+    /**
+     * Handles HTTP OPTIONS requests (CORS Preflight).
+     * Browsers send an OPTIONS request before a POST/PUT request to check permissions.
+     * This method simply sets the CORS headers and returns status 200 OK.
+     *
+     * @param req  The HTTP request.
+     * @param resp The HTTP response.
+     */
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
         setCorsHeaders(resp);
         resp.setStatus(200);
     }
 
+
+    /**
+     * Handles HTTP POST requests to create a new product.
+     * <p>
+     * Workflow:
+     * 1. Reads the raw JSON body from the request.
+     * 2. Deserializes JSON into a {@link Product} object using Gson.
+     * 3. Calls DAO to save the product to the database.
+     * </p>
+     *
+     * Responses:
+     * <ul>
+     * <li>200 OK: Product created successfully.</li>
+     * <li>400 Bad Request: Invalid JSON format.</li>
+     * <li>500 Internal Server Error: Database operation failed.</li>
+     * </ul>
+     *
+     * @param req  The HTTP request containing the JSON payload.
+     * @param resp The HTTP response.
+     * @throws IOException If an input or output error occurs.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
@@ -80,6 +136,15 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
+
+    /**
+     * Handles GET requests.
+     * Supports parameters:
+     * - id: fetch single product
+     * - q: search by name
+     * - categoryId: filter by category (supports 'brand' and 'spec_*' filters)
+     * - none: fetch all products
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setCorsHeaders(resp);
