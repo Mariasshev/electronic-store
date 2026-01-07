@@ -1,36 +1,42 @@
 package org.store.controller;
 
 import com.google.gson.Gson;
-import org.store.service.CurrencyService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.store.service.CurrencyService;
 import java.io.IOException;
-import java.util.Collections;
 
 @WebServlet("/api/currency")
 public class CurrencyServlet extends HttpServlet {
 
-    private final Gson gson = new Gson();
+    private CurrencyService currencyService;
+    private Gson gson;
+
+    public CurrencyServlet() {
+        this.currencyService = new CurrencyService();
+        this.gson = new Gson();
+    }
+
+    public CurrencyServlet(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+        this.gson = new Gson();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // CORS
         resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET");
-
         resp.setContentType("application/json;charset=UTF-8");
 
         try {
-            CurrencyService service = new CurrencyService();
-            var rates = service.getExchangeRates();
-            String jsonOutput = gson.toJson(rates);
+            var rates = this.currencyService.getExchangeRates();
 
+            String jsonOutput = this.gson.toJson(rates);
             resp.getWriter().write(jsonOutput);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Це покаже помилку в консолі, якщо вона є
             resp.getWriter().write("[]");
         }
     }

@@ -17,6 +17,7 @@ public class Product {
     private String categoryName;
     private String brandName;
     private Long brandId;
+    private Double oldPrice;
 
     private List<String> gallery = new ArrayList<>();
     private Map<String, String> specifications = new HashMap<>();
@@ -40,6 +41,9 @@ public class Product {
     public void setBrandId(Long brandId) {
         this.brandId = brandId;
     }
+
+    public Double getOldPrice() { return oldPrice; }
+    public void setOldPrice(Double oldPrice) { this.oldPrice = oldPrice; }
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }

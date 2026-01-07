@@ -43,9 +43,23 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'
+
+
+    // JUnit 5 (Двигун тестів)
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
+    // Mockito (Для створення фейкових об'єктів DAO/Request)
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+
+    // Щоб тестувати сервлети (потрібен сам API)
+    testImplementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }
 
 war {
     archiveFileName = 'store.war'
     from('lib') { include '*.jar' }
+}
+test {
+    useJUnitPlatform()
 }

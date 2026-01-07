@@ -22,10 +22,16 @@ public class ProductServlet extends HttpServlet {
     private ProductDAO productDAO;
     private Gson gson;
 
-    @Override
-    public void init() {
-        productDAO = new ProductDAO();
-        gson = new Gson();
+    public ProductServlet() {
+        this.productDAO = new ProductDAO();
+        this.gson = new Gson();
+    }
+
+    // 2. Конструктор З параметрами (Для ТЕСТІВ)
+    // Ми будемо викликати його в JUnit і передавати туди Mock-об'єкти.
+    public ProductServlet(ProductDAO productDAO, Gson gson) {
+        this.productDAO = productDAO;
+        this.gson = gson;
     }
 
     private void setCorsHeaders(HttpServletResponse resp) {

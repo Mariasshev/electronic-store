@@ -9,46 +9,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add catalog filters">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/checkout/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/CurrencyTicker.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CurrencyServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/OrderDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/PromoCodeDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/UserCardDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dto/CurrencyRate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/UserCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/store/service/CurrencyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded.xml" afterDir="false" />
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add api calls, add order, add card">
+      <change afterPath="$PROJECT_DIR$/client/src/app/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/org/store/controller/CurrencyServletTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/org/store/controller/ProductServletTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/org_store_electronic_store_main_war_exploded2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/account/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/account/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/cart/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/context/CartContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/context/CartContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/CartServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/CartServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/ProductServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/ProductServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/UserServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/UserServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/WishlistServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/controller/WishlistServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/CartDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/CartDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/ProductDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/ProductDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dao/UserDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dto/FilterDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/dto/FilterDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/CartItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/CartItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Order.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductColor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductColor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductMemory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product$ProductMemory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded/WEB-INF/classes/org/store/model/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/controller/CurrencyServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/controller/CurrencyServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/dao/ProductDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/dao/ProductDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductColor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductColor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductMemory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product$ProductMemory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/model/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/org_store_electronic_store_main_war_exploded2/WEB-INF/classes/org/store/service/CurrencyService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CurrencyServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CurrencyServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dto/CurrencyRate.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dto/CurrencyRate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/model/Product.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +110,9 @@
     "Application.Main.executor": "Run",
     "Gradle.Build electronic-store.executor": "Run",
     "Gradle.Build server.executor": "Run",
+    "Gradle.CurrencyServletTest.executor": "Run",
+    "Gradle.ProductServletTest.executor": "Run",
+    "Gradle.Tests in 'org.store.electronic-store.test'.executor": "Run",
     "Gradle.electronic-store [:org.store.Main.main()].executor": "Run",
     "Gradle.electronic-store.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -169,6 +156,9 @@
       <recent name="C:\Users\Admin\Downloads\spring-mvc-main\spring-mvc-main\electronic-store\src\main\webapp\WEB-INF" />
       <recent name="C:\Users\Admin\Downloads\spring-mvc-main\spring-mvc-main\electronic-store\src\main\webapp" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="configurationStatuses">
@@ -183,7 +173,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.14">
+  <component name="RunManager" selected="Gradle.ProductServletTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.store.Main" />
       <module name="electronic-store.main" />
@@ -196,6 +186,76 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="CurrencyServletTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.store.controller.CurrencyServletTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProductServletTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.store.controller.ProductServletTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'org.store.electronic-store.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
     </configuration>
     <configuration name="electronic-store" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
       <ExternalSystemSettings>
@@ -307,10 +367,16 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Gradle.electronic-store" />
+      <item itemvalue="Gradle.CurrencyServletTest" />
+      <item itemvalue="Gradle.ProductServletTest" />
+      <item itemvalue="Gradle.Tests in 'org.store.electronic-store.test'" />
       <item itemvalue="Tomcat Server.Tomcat 11.0.14" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ProductServletTest" />
+        <item itemvalue="Gradle.CurrencyServletTest" />
+        <item itemvalue="Gradle.Tests in 'org.store.electronic-store.test'" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -340,7 +406,7 @@
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
-      <workItem from="1767698092284" duration="16302000" />
+      <workItem from="1767698092284" duration="20477000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -382,7 +448,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767730103135</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add api calls, add order, add card">
+      <option name="closed" value="true" />
+      <created>1767743981414</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1767743981414</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -407,7 +481,8 @@
     <MESSAGE value="add jsp pages" />
     <MESSAGE value="add auth/register, add colors, add memory, add wishlist" />
     <MESSAGE value="add catalog filters" />
-    <option name="LAST_COMMIT_MESSAGE" value="add catalog filters" />
+    <MESSAGE value="add api calls, add order, add card" />
+    <option name="LAST_COMMIT_MESSAGE" value="add api calls, add order, add card" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

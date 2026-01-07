@@ -22,8 +22,11 @@ public class ProductDAO {
                 Product product = new Product();
                 product.setId(rs.getLong("id"));
                 product.setName(rs.getString("name"));
-                product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getBigDecimal("price"));
+
+                Double old = rs.getObject("old_price", Double.class);
+                product.setOldPrice(old);
+
                 product.setStockQuantity(rs.getInt("stock_quantity"));
                 product.setImageUrl(rs.getString("image_url"));
 
@@ -39,7 +42,7 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
-                "SELECT p.id, p.name, p.description, p.price, p.stock_quantity, p.image_url, p.category_id, p.brand_id, " +
+                "SELECT p.id, p.name, p.description, p.price, p.old_price, p.stock_quantity, p.image_url, p.category_id, p.brand_id, " +
                         "b.name as brand_name " +
                         "FROM elstore_products p " +
                         "LEFT JOIN elstore_brands b ON p.brand_id = b.id " +
@@ -65,9 +68,6 @@ public class ProductDAO {
                 sql.append(")) ");
             }
         }
-
-        // ДЕБАГ:
-//        System.out.println("EXECUTING SQL: " + sql.toString());
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
@@ -99,12 +99,11 @@ public class ProductDAO {
                 p.setName(rs.getString("name"));
                 p.setDescription(rs.getString("description"));
                 p.setPrice(rs.getBigDecimal("price"));
+                p.setOldPrice(rs.getObject("old_price", Double.class));
                 p.setStockQuantity(rs.getInt("stock_quantity"));
                 p.setImageUrl(rs.getString("image_url"));
                 p.setCategoryId(rs.getLong("category_id"));
                 p.setBrandId(rs.getLong("brand_id"));
-
-                // Якщо в моделі є поле brandName
                 p.setBrandName(rs.getString("brand_name"));
 
                 products.add(p);
@@ -122,8 +121,7 @@ public class ProductDAO {
         Map<String, List<String>> specs = new java.util.HashMap<>();
 
         try (Connection conn = DBConnection.getConnection()) {
-
-            // 1.бренди, які є в цій категорії
+            // 1. Бренди
             String sqlBrands = "SELECT DISTINCT b.name FROM elstore_brands b " +
                     "JOIN elstore_products p ON p.brand_id = b.id " +
                     "WHERE p.category_id = ? ORDER BY b.name";
@@ -133,7 +131,7 @@ public class ProductDAO {
                 while (rs.next()) brands.add(rs.getString(1));
             }
 
-            // 2. характеристики та їх значення
+            // 2. Характеристики
             String sqlSpecs = "SELECT DISTINCT s.spec_key, s.spec_value FROM elstore_product_specs s " +
                     "JOIN elstore_products p ON s.product_id = p.id " +
                     "WHERE p.category_id = ? ORDER BY s.spec_key, s.spec_value";
@@ -143,12 +141,10 @@ public class ProductDAO {
                 while (rs.next()) {
                     String key = rs.getString("spec_key");
                     String val = rs.getString("spec_value");
-
                     specs.putIfAbsent(key, new ArrayList<>());
                     specs.get(key).add(val);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,7 +153,7 @@ public class ProductDAO {
 
     public List<Product> searchByName(String query) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT id, name, price, image_url FROM elstore_products " +
+        String sql = "SELECT id, name, price, old_price, image_url FROM elstore_products " +
                 "WHERE LOWER(name) LIKE ? ORDER BY name " +
                 "FETCH NEXT 5 ROWS ONLY";
 
@@ -172,6 +168,8 @@ public class ProductDAO {
                 p.setId(rs.getLong("id"));
                 p.setName(rs.getString("name"));
                 p.setPrice(rs.getBigDecimal("price"));
+                // [UPDATED]
+                p.setOldPrice(rs.getObject("old_price", Double.class));
                 p.setImageUrl(rs.getString("image_url"));
                 products.add(p);
             }
@@ -196,13 +194,7 @@ public class ProductDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getLong("id"));
-                product.setName(rs.getString("name"));
-                product.setDescription(rs.getString("description"));
-                product.setPrice(rs.getBigDecimal("price"));
-                product.setStockQuantity(rs.getInt("stock_quantity"));
-                product.setImageUrl(rs.getString("image_url"));
+                Product product = mapProduct(rs);
                 product.setCategoryName(rs.getString("category_name"));
                 product.setBrandName(rs.getString("brand_name"));
                 products.add(product);
@@ -216,28 +208,28 @@ public class ProductDAO {
     public boolean createProductFull(Product product) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
 
         try {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);
 
-            // 1. Вставляємо сам продукт
-            String sqlProduct = "INSERT INTO elstore_products (name, description, price, stock_quantity, category_id, brand_id, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sqlProduct, new String[]{"id"}); // Очікуємо отримати згенерований ID
+            String sqlProduct = "INSERT INTO elstore_products (name, description, price, old_price, stock_quantity, category_id, brand_id, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sqlProduct, new String[]{"id"});
 
             pstmt.setString(1, product.getName());
             pstmt.setString(2, product.getDescription());
             pstmt.setBigDecimal(3, product.getPrice());
-            pstmt.setInt(4, product.getStockQuantity());
-            pstmt.setLong(5, product.getCategoryId());
-            pstmt.setLong(6, product.getBrandId());
-            pstmt.setString(7, product.getImageUrl());
+
+            pstmt.setObject(4, product.getOldPrice());
+
+            pstmt.setInt(5, product.getStockQuantity());
+            pstmt.setLong(6, product.getCategoryId());
+            pstmt.setLong(7, product.getBrandId());
+            pstmt.setString(8, product.getImageUrl());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) throw new SQLException("Creating product failed, no rows affected.");
 
-            // Отримуємо ID нового товару
             long newProductId;
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -247,7 +239,7 @@ public class ProductDAO {
                 }
             }
 
-            // 2. кольори (якщо є)
+            // 2. Кольори
             if (product.getColors() != null && !product.getColors().isEmpty()) {
                 String sqlColor = "INSERT INTO elstore_product_colors (product_id, color_name, hex_value, quantity) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement pstmtColor = conn.prepareStatement(sqlColor)) {
@@ -262,7 +254,7 @@ public class ProductDAO {
                 }
             }
 
-            // 3. характеристики (Specs)
+            // 3. Характеристики
             if (product.getSpecifications() != null && !product.getSpecifications().isEmpty()) {
                 String sqlSpec = "INSERT INTO elstore_product_specs (product_id, spec_key, spec_value, sort_order) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement pstmtSpec = conn.prepareStatement(sqlSpec)) {
@@ -278,7 +270,7 @@ public class ProductDAO {
                 }
             }
 
-            // 4. (Gallery)
+            // 4. Галерея
             if (product.getGallery() != null && !product.getGallery().isEmpty()) {
                 String sqlImg = "INSERT INTO elstore_product_images (product_id, image_url) VALUES (?, ?)";
                 try (PreparedStatement pstmtImg = conn.prepareStatement(sqlImg)) {
@@ -308,7 +300,6 @@ public class ProductDAO {
     public Product findById(Long id) {
         Product product = null;
 
-        // 1. Основний товар
         String sqlProduct =
                 "SELECT p.*, c.name AS category_name, b.name AS brand_name " +
                         "FROM elstore_products p " +
@@ -316,16 +307,9 @@ public class ProductDAO {
                         "LEFT JOIN elstore_brands b ON p.brand_id = b.id " +
                         "WHERE p.id = ?";
 
-        // 2. Картинки
         String sqlImages = "SELECT image_url FROM elstore_product_images WHERE product_id = ?";
-
-        // 3. Характеристики
         String sqlSpecs = "SELECT spec_key, spec_value FROM elstore_product_specs WHERE product_id = ? ORDER BY sort_order";
-
-        // 4. Кольори
         String sqlColors = "SELECT color_name, hex_value, quantity FROM elstore_product_colors WHERE product_id = ?";
-
-        // 5. ПАМ'ЯТЬ
         String sqlMemory = "SELECT memory_size, price_modifier, quantity FROM elstore_product_memory WHERE product_id = ?";
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -336,17 +320,8 @@ public class ProductDAO {
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    product = new Product();
-                    product.setId(rs.getLong("id"));
-                    product.setName(rs.getString("name"));
-                    product.setDescription(rs.getString("description"));
-                    product.setPrice(rs.getBigDecimal("price"));
-                    product.setStockQuantity(rs.getInt("stock_quantity"));
-                    product.setImageUrl(rs.getString("image_url"));
-
-                    // Breadcrumbs data
+                    product = mapProduct(rs);
                     product.setCategoryName(rs.getString("category_name"));
-                    product.setCategoryId(rs.getLong("category_id"));
                     product.setBrandName(rs.getString("brand_name"));
                 }
             }
@@ -393,6 +368,7 @@ public class ProductDAO {
                 product.setColors(colorList);
             }
 
+            // --- Пам'ять ---
             try (PreparedStatement pstmt = conn.prepareStatement(sqlMemory)) {
                 pstmt.setLong(1, id);
                 ResultSet rs = pstmt.executeQuery();
@@ -410,6 +386,24 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return product;
+    }
+
+    private Product mapProduct(ResultSet rs) throws SQLException {
+        Product product = new Product();
+        product.setId(rs.getLong("id"));
+        product.setName(rs.getString("name"));
+        try { product.setDescription(rs.getString("description")); } catch (SQLException ignored) {}
+
+        product.setPrice(rs.getBigDecimal("price"));
+        product.setOldPrice(rs.getObject("old_price", Double.class));
+        try { product.setStockQuantity(rs.getInt("stock_quantity")); } catch (SQLException ignored) {}
+
+        product.setImageUrl(rs.getString("image_url"));
+
+        try { product.setCategoryId(rs.getLong("category_id")); } catch (SQLException ignored) {}
+        try { product.setBrandId(rs.getLong("brand_id")); } catch (SQLException ignored) {}
+
         return product;
     }
 }
