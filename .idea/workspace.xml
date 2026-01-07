@@ -11,20 +11,11 @@
   <component name="ChangeListManager">
     <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add docs">
       <change afterPath="$PROJECT_DIR$/client/src/app/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/catalog/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductsTabs.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AddressServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/AuthServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/CartServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/OrderServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/PromoCodeServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserCardServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/UserServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/WishlistServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +56,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -398,7 +390,7 @@
       <workItem from="1767292604177" duration="447000" />
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
-      <workItem from="1767698092284" duration="24382000" />
+      <workItem from="1767698092284" duration="24712000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -472,7 +464,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767792073429</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add docs">
+      <option name="closed" value="true" />
+      <created>1767792485814</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1767792485814</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
