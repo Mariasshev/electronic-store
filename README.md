@@ -40,11 +40,9 @@
 
 ## 📸 Скріншоти
 
-*(Тут ви можете вставити посилання на картинки. Зробіть скріншоти сайту і покладіть їх у папку `screenshots/` у корені проєкту, або просто завантажте в issue на гітхабі і скопіюйте посилання)*
-
-| Головна сторінка | Кошик |
+| Вішліст | Каталог |
 |:---:|:---:|
-| ![Main Page](https://via.placeholder.com/400x200?text=Screenshot+Home) | ![Cart](https://via.placeholder.com/400x200?text=Screenshot+Cart) |
+| ![Wishlist Page](screenshots/wishlist.png) | ![Catalog](screenshots/catalog.png) |
 
 ---
 
