@@ -1,181 +1,85 @@
 package org.store.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.store.dao.CartDAO;
 import org.store.model.CartItem;
 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+@RestController
+@RequestMapping("/api/cart")
+@CrossOrigin(origins = "http://localhost:3000")
+public class CartController {
 
-/**
- * Servlet implementation class CartController.
- * Manages the user's shopping cart via the endpoint {@code /api/cart}.
- * Supported operations:
- * <ul>
- * <li><b>GET:</b> Retrieve current cart items (requires {@code userId}).</li>
- * <li><b>POST:</b> Add an item to the cart (requires JSON body).</li>
- * <li><b>PUT:</b> Update item quantity (requires JSON body).</li>
- * <li><b>DELETE:</b> Remove an item (requires {@code userId} and {@code productId}).</li>
- * </ul>
- */
-@WebServlet("/api/cart")
-public class CartController extends HttpServlet {
-    private CartDAO cartDAO = new CartDAO();
-    private Gson gson = new Gson();
+    private final CartDAO cartDAO;
 
-    /**
-     * Default constructor for the Servlet container (Tomcat).
-     * Initializes dependencies with real implementations.
-     */
-    public CartController() {
-        this.cartDAO = new CartDAO();
-        this.gson = new Gson();
-    }
-
-    /**
-     * Constructor for Unit Testing.
-     * Allows injection of Mock objects.
-     *
-     * @param cartDAO Mock or real CartDAO.
-     * @param gson Mock or real Gson.
-     */
-    public CartController(CartDAO cartDAO, Gson gson) {
+    @Autowired
+    public CartController(CartDAO cartDAO) {
         this.cartDAO = cartDAO;
-        this.gson = gson;
     }
 
-
     /**
-     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
-     *
-     * @param resp The HTTP response object.
+     * GET: Get cart items.
+     * URL: /api/cart?userId=1
      */
-    private void setCorsHeaders(HttpServletResponse resp) {
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    @GetMapping
+    public List<CartItem> getCart(@RequestParam Long userId) {
+        return cartDAO.getCart(userId);
     }
 
-
     /**
-     * Handles CORS Preflight requests.
+     * POST: Add item to cart.
+     * JSON: { "userId": 1, "productId": 5, "quantity": 1 }
      */
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-        setCorsHeaders(resp);
-        resp.setStatus(200);
+    @PostMapping
+    public ResponseEntity<?> addToCart(@RequestBody Map<String, Object> payload) {
+        try {
+            Long userId = ((Number) payload.get("userId")).longValue();
+            Long productId = ((Number) payload.get("productId")).longValue();
+
+            // За замовчуванням кількість 1, якщо не передано
+            int quantity = payload.containsKey("quantity") ? ((Number) payload.get("quantity")).intValue() : 1;
+
+            cartDAO.addToCart(userId, productId, quantity);
+            return ResponseEntity.ok(Map.of("message", "Added to cart"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Error adding to cart"));
+        }
     }
 
+    /**
+     * PUT: Update quantity.
+     * JSON: { "userId": 1, "productId": 5, "quantity": 3 }
+     */
+    @PutMapping
+    public ResponseEntity<?> updateQuantity(@RequestBody Map<String, Object> payload) {
+        try {
+            Long userId = ((Number) payload.get("userId")).longValue();
+            Long productId = ((Number) payload.get("productId")).longValue();
+            int quantity = ((Number) payload.get("quantity")).intValue();
+
+            cartDAO.updateQuantity(userId, productId, quantity);
+            return ResponseEntity.ok(Map.of("message", "Quantity updated"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Error updating quantity"));
+        }
+    }
 
     /**
-     * Handles GET requests to retrieve the shopping cart.
-     * Expects a {@code userId} query parameter.
-     *
-     * @param req  HttpServletRequest containing {@code userId}.
-     * @param resp HttpServletResponse containing the list of cart items in JSON.
-     * @throws IOException If an I/O error occurs.
+     * DELETE: Remove item.
+     * URL: /api/cart?userId=1&productId=5
      */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        resp.setContentType("application/json;charset=UTF-8");
-
-        String userId = req.getParameter("userId");
-        if (userId != null) {
-            List<CartItem> items = cartDAO.getCart(Long.parseLong(userId));
-            resp.getWriter().write(gson.toJson(items));
+    @DeleteMapping
+    public ResponseEntity<?> removeFromCart(@RequestParam Long userId, @RequestParam Long productId) {
+        if (cartDAO.removeFromCart(userId, productId)) {
+            return ResponseEntity.ok(Map.of("message", "Removed"));
         } else {
-            resp.getWriter().write("[]");
-        }
-    }
-
-
-    /**
-     * Handles POST requests to add an item to the cart.
-     * Reads JSON body containing {@code userId}, {@code productId}, and optional {@code quantity}.
-     *
-     * @param req  HttpServletRequest containing JSON payload.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-
-        StringBuilder sb = new StringBuilder();
-        try (java.io.BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-        }
-
-        JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-        long userId = json.get("userId").getAsLong();
-        long productId = json.get("productId").getAsLong();
-        int quantity = json.has("quantity") ? json.get("quantity").getAsInt() : 1;
-
-        if (cartDAO.addToCart(userId, productId, quantity)) {
-            resp.getWriter().write("{\"message\": \"Added to cart\"}");
-        } else {
-            resp.setStatus(500);
-        }
-    }
-
-
-    /**
-     * Handles PUT requests to update item quantity.
-     * Reads JSON body containing {@code userId}, {@code productId}, and new {@code quantity}.
-     *
-     * @param req  HttpServletRequest containing JSON payload.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-
-        StringBuilder sb = new StringBuilder();
-        try (java.io.BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-        }
-
-        JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-        long userId = json.get("userId").getAsLong();
-        long productId = json.get("productId").getAsLong();
-        int quantity = json.get("quantity").getAsInt();
-
-        if (cartDAO.updateQuantity(userId, productId, quantity)) {
-            resp.getWriter().write("{\"message\": \"Quantity updated\"}");
-        } else {
-            resp.setStatus(500);
-        }
-    }
-
-
-    /**
-     * Handles DELETE requests to remove an item from the cart.
-     * Expects {@code userId} and {@code productId} query parameters.
-     *
-     * @param req  HttpServletRequest containing query parameters.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        String userId = req.getParameter("userId");
-        String productId = req.getParameter("productId");
-
-        if (cartDAO.removeFromCart(Long.parseLong(userId), Long.parseLong(productId))) {
-            resp.getWriter().write("{\"message\": \"Removed\"}");
-        } else {
-            resp.setStatus(500);
+            return ResponseEntity.status(500).body(Map.of("error", "Remove failed"));
         }
     }
 }

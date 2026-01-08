@@ -1,166 +1,107 @@
 package org.store.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import org.store.dao.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.store.model.User;
+import org.store.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Servlet implementation class UserController.
- * Manages user profile operations at the endpoint {@code /api/user}.
- * Supported operations:
- * <ul>
- * <li>GET: Retrieve user profile details by email.</li>
- * <li>PUT: Update user profile information OR change password.</li>
- * <li>OPTIONS: Handle CORS preflight requests.</li>
- * </ul>
+ * Spring Boot REST Controller for managing user profiles.
+ * Handles requests to '/api/user'.
  */
-@WebServlet("/api/user")
-public class UserController extends HttpServlet {
+@RestController
+@RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000")
+public class UserController {
 
-    private UserDAO userDAO;
-    private Gson gson;
+    private final UserRepository userRepository;
 
-    /**
-     * Default constructor for the Servlet container (Tomcat).
-     * Initializes dependencies with real implementations.
-     */
-    public UserController() {
-        this.userDAO = new UserDAO();
-        this.gson = new Gson();
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     /**
-     * Constructor for Unit Testing.
-     * Allows injection of Mock objects.
-     *
-     * @param userDAO Mock or real UserDAO.
-     * @param gson Mock or real Gson.
+     * GET: Retrieve user profile details by email.
+     * URL: /api/user?email=test@example.com
      */
-    public UserController(UserDAO userDAO, Gson gson) {
-        this.userDAO = userDAO;
-        this.gson = gson;
-    }
+    @GetMapping
+    public ResponseEntity<?> getUser(@RequestParam String email) {
+        // запит: SELECT * FROM users WHERE email = ?
+        Optional<User> userOpt = userRepository.findByEmail(email);
 
-    /**
-     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
-     * Allows requests from {@code http://localhost:3000} (React Frontend).
-     *
-     * @param resp The HTTP response object.
-     */
-    private void setCorsHeaders(HttpServletResponse resp) {
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    }
-
-    /**
-     * Handles CORS Preflight requests.
-     */
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-        setCorsHeaders(resp);
-        resp.setStatus(200);
-    }
-
-    /**
-     * Handles GET requests to retrieve user information.
-     * Expects an 'email' query parameter.
-     * <p>
-     * Note: The password field is set to null before sending the response for security reasons.
-     * </p>
-     *
-     * @param req  HttpServletRequest containing the 'email' parameter.
-     * @param resp HttpServletResponse containing the User JSON or error message.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        resp.setContentType("application/json;charset=UTF-8");
-
-        String email = req.getParameter("email");
-
-        if (email == null || email.isEmpty()) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-            resp.getWriter().write("{\"error\": \"Email parameter is required\"}");
-            return;
-        }
-
-        User user = userDAO.findByEmail(email);
-
-        if (user != null) {
-            // Видаляємо пароль перед відправкою на клієнт
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
             user.setPassword(null);
-            resp.getWriter().write(gson.toJson(user));
+            return ResponseEntity.ok(user);
         } else {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
-            resp.getWriter().write("{\"error\": \"User not found\"}");
+            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
         }
     }
 
     /**
-     * Handles PUT requests for updating user data.
-     * This method supports two distinct operations based on the JSON payload:
-     * <ol>
-     * <li><b>Password Change:</b> If payload contains {@code currentPassword} and {@code newPassword}.</li>
-     * <li><b>Profile Update:</b> If payload contains standard user fields (address, phone, name).</li>
-     * </ol>
-     *
-     * @param req  HttpServletRequest containing the JSON payload.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
+     * PUT: Update user profile OR change password.
+     * <p>
+     * Logic:
+     * 1. If JSON contains "newPassword" -> Change Password mode.
+     * 2. Otherwise -> Update Profile mode.
+     * </p>
+     * * We use Map<String, Object> to flexibly read the JSON body
+     * because the structure changes depending on the operation.
      */
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        resp.setContentType("application/json;charset=UTF-8");
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> payload) {
+        String email = (String) payload.get("email");
 
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
+        if (email == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
         }
 
-        JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
+        // 1. знаходимо користувача в базі
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
+        }
+        User user = userOpt.get();
 
         // --- ЛОГІКА ЗМІНИ ПАРОЛЯ ---
-        if (json.has("newPassword") && json.has("currentPassword")) {
-            String email = json.get("email").getAsString();
-            String currentPass = json.get("currentPassword").getAsString();
-            String newPass = json.get("newPassword").getAsString();
+        if (payload.containsKey("newPassword") && payload.containsKey("currentPassword")) {
+            String currentPass = (String) payload.get("currentPassword");
+            String newPass = (String) payload.get("newPassword");
 
-            if (userDAO.changePassword(email, currentPass, newPass)) {
-                resp.getWriter().write("{\"message\": \"Password changed successfully\"}");
-            } else {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-                resp.getWriter().write("{\"error\": \"Incorrect current password\"}");
+            // 1. Перевірка:
+            if (!BCrypt.checkpw(currentPass, user.getPassword())) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Incorrect current password"));
             }
-            return;
+
+            // 2. Хешуємо НОВИЙ пароль
+            String hashedNewPass = BCrypt.hashpw(newPass, BCrypt.gensalt());
+
+            user.setPassword(hashedNewPass);
+
+            userRepository.save(user);
+            return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
         }
 
         // --- ЛОГІКА ОНОВЛЕННЯ ПРОФІЛЮ ---
         try {
-            User userToUpdate = gson.fromJson(json, User.class);
+            if (payload.containsKey("username")) user.setUsername((String) payload.get("username"));
+            if (payload.containsKey("phone")) user.setPhone((String) payload.get("phone"));
+            if (payload.containsKey("address")) user.setAddress((String) payload.get("address"));
 
-            if (userDAO.updateUser(userToUpdate)) {
-                User updatedUser = userDAO.findByEmail(userToUpdate.getEmail());
-                updatedUser.setPassword(null);
-                resp.getWriter().write(gson.toJson(updatedUser));
-            } else {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
-                resp.getWriter().write("{\"error\": \"Update failed\"}");
-            }
+            userRepository.save(user);
+
+            user.setPassword(null);
+            return ResponseEntity.ok(user);
+
         } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-            resp.getWriter().write("{\"error\": \"Invalid data format\"}");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", "Update failed"));
         }
     }
 }

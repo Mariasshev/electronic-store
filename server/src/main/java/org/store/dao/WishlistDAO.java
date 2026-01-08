@@ -1,100 +1,69 @@
 package org.store.dao;
 
-import org.store.config.DBConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.store.model.Product;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object (DAO) for managing the user's Wishlist.
- * <p>
- * Handles database operations for the {@code elstore_wishlist} table,
- * including adding products, removing them, and retrieving the list of liked items.
- * </p>
+ * Data Access Object (DAO) for managing the user's Wishlist using Spring JDBC.
  */
+@Repository
 public class WishlistDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public WishlistDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     /**
-     * Retrieves all products currently in a specific user's wishlist.
-     * Performs a JOIN with the {@code elstore_products} table to get product details.
-     *
-     * @param userId The unique identifier of the user.
-     * @return A List of {@link Product} objects. Returns empty list if no items found.
+     * Mapper: перетворює рядок SQL (з таблиці продуктів) в об'єкт Product.
+     */
+    private final RowMapper<Product> productMapper = (rs, rowNum) -> {
+        Product p = new Product();
+        p.setId(rs.getLong("id"));
+        p.setName(rs.getString("name"));
+        p.setPrice(rs.getBigDecimal("price"));
+        p.setImageUrl(rs.getString("image_url"));
+        return p;
+    };
+
+    /**
+     * Retrieves all products in user's wishlist.
      */
     public List<Product> getWishlist(Long userId) {
-        List<Product> products = new ArrayList<>();
         String sql = "SELECT p.* FROM elstore_products p " +
                 "JOIN elstore_wishlist w ON p.id = w.product_id " +
                 "WHERE w.user_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setLong(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getLong("id"));
-                p.setName(rs.getString("name"));
-                p.setPrice(rs.getBigDecimal("price"));
-                p.setImageUrl(rs.getString("image_url"));
-                products.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
+        return jdbcTemplate.query(sql, productMapper, userId);
     }
 
     /**
-     * Adds a product to the user's wishlist.
-     * Handles duplicates gracefully (if the pair user_id + product_id already exists).
-     *
-     * @param userId    The user ID.
-     * @param productId The product ID to add.
-     * @return {@code true} if added successfully, {@code false} if already exists or error.
+     * Adds a product to the wishlist.
+     * Handles duplicates gracefully using exception handling.
      */
     public boolean addToWishlist(Long userId, Long productId) {
         String sql = "INSERT INTO elstore_wishlist (user_id, product_id) VALUES (?, ?)";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setLong(1, userId);
-            pstmt.setLong(2, productId);
-            return pstmt.executeUpdate() > 0;
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            // Product already in wishlist - treat as safe operation
-            return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try {
+            int rows = jdbcTemplate.update(sql, userId, productId);
+            return rows > 0;
+        } catch (DataIntegrityViolationException e) {
+            // Вже є в списку бажань (дублікат) - це нормально, просто повертаємо false
             return false;
         }
     }
 
     /**
-     * Removes a product from the user's wishlist.
-     *
-     * @param userId    The user ID.
-     * @param productId The product ID to remove.
-     * @return {@code true} if removed successfully.
+     * Removes a product from the wishlist.
      */
     public boolean removeFromWishlist(Long userId, Long productId) {
         String sql = "DELETE FROM elstore_wishlist WHERE user_id = ? AND product_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setLong(1, userId);
-            pstmt.setLong(2, productId);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return jdbcTemplate.update(sql, userId, productId) > 0;
     }
 }

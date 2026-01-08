@@ -1,177 +1,69 @@
 package org.store.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.store.dao.WishlistDAO;
 import org.store.model.Product;
 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Servlet implementation class WishlistController.
- * Manages the user's list of favorite products via the endpoint {@code /api/wishlist}.
- * Supported operations:
- * <ul>
- * <li><b>GET:</b> Retrieve all products in the wishlist (requires {@code userId}).</li>
- * <li><b>POST:</b> Add a product to the wishlist (requires JSON body).</li>
- * <li><b>DELETE:</b> Remove a product (requires {@code userId} and {@code productId}).</li>
- * </ul>
- */
-@WebServlet("/api/wishlist")
-public class WishlistController extends HttpServlet {
+@RestController
+@RequestMapping("/api/wishlist")
+@CrossOrigin(origins = "http://localhost:3000")
+public class WishlistController {
 
-    private WishlistDAO wishlistDAO;
-    private Gson gson;
+    private final WishlistDAO wishlistDAO;
 
-    /**
-     * Default constructor for the Servlet container (Tomcat).
-     * Initializes dependencies with real implementations.
-     */
-    public WishlistController() {
-        this.wishlistDAO = new WishlistDAO();
-        this.gson = new Gson();
-    }
-
-    /**
-     * Constructor for Unit Testing.
-     * Allows injection of Mock objects.
-     *
-     * @param wishlistDAO Mock or real WishlistDAO.
-     * @param gson Mock or real Gson.
-     */
-    public WishlistController(WishlistDAO wishlistDAO, Gson gson) {
+    @Autowired
+    public WishlistController(WishlistDAO wishlistDAO) {
         this.wishlistDAO = wishlistDAO;
-        this.gson = gson;
     }
 
     /**
-     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
-     *
-     * @param resp The HTTP response object.
+     * GET: Retrieve wishlist.
+     * URL: /api/wishlist?userId=123
      */
-    private void setCorsHeaders(HttpServletResponse resp) {
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    }
-
-    /**
-     * Handles CORS Preflight requests.
-     */
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-        setCorsHeaders(resp);
-        resp.setStatus(HttpServletResponse.SC_OK);
-    }
-
-    /**
-     * Handles GET requests to retrieve the wishlist.
-     * Expects a {@code userId} query parameter.
-     *
-     * @param req  HttpServletRequest containing {@code userId}.
-     * @param resp HttpServletResponse containing the list of Products in JSON.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        resp.setContentType("application/json;charset=UTF-8");
-
-        String userIdParam = req.getParameter("userId");
-        if (userIdParam == null) {
-            resp.getWriter().write("[]");
-            return;
+    @GetMapping
+    public ResponseEntity<?> getWishlist(@RequestParam Long userId) {
+        if (userId == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "userId is required"));
         }
+        List<Product> products = wishlistDAO.getWishlist(userId);
+        return ResponseEntity.ok(products);
+    }
 
+    /**
+     * POST: Add to wishlist.
+     * JSON: { "userId": 1, "productId": 5 }
+     */
+    @PostMapping
+    public ResponseEntity<?> addToWishlist(@RequestBody Map<String, Object> payload) {
         try {
-            long userId = Long.parseLong(userIdParam);
-            List<Product> products = wishlistDAO.getWishlist(userId);
-            resp.getWriter().write(gson.toJson(products));
-        } catch (NumberFormatException e) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"Invalid userId format\"}");
-        }
-    }
-
-    /**
-     * Handles POST requests to add a product to the wishlist.
-     * Expects JSON body with {@code userId} and {@code productId}.
-     *
-     * @param req  HttpServletRequest containing JSON payload.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-        }
-
-        try {
-            JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-            if (!json.has("userId") || !json.has("productId")) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-
-            long userId = json.get("userId").getAsLong();
-            long productId = json.get("productId").getAsLong();
+            Long userId = ((Number) payload.get("userId")).longValue();
+            Long productId = ((Number) payload.get("productId")).longValue();
 
             if (wishlistDAO.addToWishlist(userId, productId)) {
-                resp.getWriter().write("{\"message\": \"Added to wishlist\"}");
+                return ResponseEntity.ok(Map.of("message", "Added to wishlist"));
             } else {
-                resp.getWriter().write("{\"message\": \"Already in wishlist or failed\"}");
+                return ResponseEntity.ok(Map.of("message", "Already in wishlist or failed"));
             }
-
         } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"Invalid JSON\"}");
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid data"));
         }
     }
 
     /**
-     * Handles DELETE requests to remove a product from the wishlist.
-     * Expects {@code userId} and {@code productId} query parameters.
-     *
-     * @param req  HttpServletRequest containing query parameters.
-     * @param resp HttpServletResponse.
-     * @throws IOException If an I/O error occurs.
+     * DELETE: Remove from wishlist.
+     * URL: /api/wishlist?userId=1&productId=5
      */
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-
-        String userIdParam = req.getParameter("userId");
-        String productIdParam = req.getParameter("productId");
-
-        if (userIdParam != null && productIdParam != null) {
-            try {
-                long userId = Long.parseLong(userIdParam);
-                long productId = Long.parseLong(productIdParam);
-
-                if (wishlistDAO.removeFromWishlist(userId, productId)) {
-                    resp.getWriter().write("{\"message\": \"Removed from wishlist\"}");
-                } else {
-                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    resp.getWriter().write("{\"error\": \"Item not found\"}");
-                }
-            } catch (NumberFormatException e) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().write("{\"error\": \"Invalid ID format\"}");
-            }
+    @DeleteMapping
+    public ResponseEntity<?> removeFromWishlist(@RequestParam Long userId, @RequestParam Long productId) {
+        if (wishlistDAO.removeFromWishlist(userId, productId)) {
+            return ResponseEntity.ok(Map.of("message", "Removed from wishlist"));
         } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"Missing parameters\"}");
+            return ResponseEntity.status(404).body(Map.of("error", "Item not found"));
         }
     }
 }

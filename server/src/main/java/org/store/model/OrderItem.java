@@ -1,8 +1,23 @@
 package org.store.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
-    private int id;
-    private int orderId;
-    private int productId;
+
+    private Long id;
+
+    private Long orderId;
+
+    private Long productId;
+
     private int quantity;
+
+    private BigDecimal price;
 }

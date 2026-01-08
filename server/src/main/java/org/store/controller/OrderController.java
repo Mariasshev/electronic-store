@@ -1,124 +1,64 @@
 package org.store.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.store.dao.OrderDAO;
 import org.store.model.Order;
 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-
+import java.util.Map;
 
 /**
- * Servlet implementation class OrderController.
- * Manages order processing via the endpoint {@code /api/orders}.
- * Supported operations:
- * <ul>
- * <li><b>GET:</b> Retrieve order history for a specific user (requires {@code userId}).</li>
- * <li><b>POST:</b> Create a new order (checkout) based on the user's cart.</li>
- * <li><b>OPTIONS:</b> Handle CORS preflight requests.</li>
- * </ul>
+ * Spring Boot REST Controller for managing orders.
+ * Handles requests to '/api/orders'.
  */
-@WebServlet("/api/orders")
-public class OrderController extends HttpServlet {
-    private OrderDAO orderDAO = new OrderDAO();
-    private Gson gson = new Gson();
+@RestController
+@RequestMapping("/api/orders")
+@CrossOrigin(origins = "http://localhost:3000")
+public class OrderController {
 
-    /**
-     * Default constructor for the Servlet container (Tomcat).
-     * Initializes dependencies with real implementations.
-     */
-    public OrderController() {
-        this.orderDAO = new OrderDAO();
-        this.gson = new Gson();
-    }
+    private final OrderDAO orderDAO;
 
-    /**
-     * Constructor for Unit Testing.
-     * Allows injection of Mock objects.
-     *
-     * @param orderDAO Mock or real OrderDAO.
-     * @param gson Mock or real Gson.
-     */
-    public OrderController(OrderDAO orderDAO, Gson gson) {
+    @Autowired
+    public OrderController(OrderDAO orderDAO) {
         this.orderDAO = orderDAO;
-        this.gson = gson;
     }
 
     /**
-     * Sets standard Cross-Origin Resource Sharing (CORS) headers.
-     *
-     * @param resp The HTTP response object.
+     * GET: Retrieve order history for a specific user.
+     * Usage: /api/orders?userId=123
      */
-    private void setCorsHeaders(HttpServletResponse resp) {
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    }
-
-    /**
-     * Handles CORS Preflight requests.
-     */
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-        setCorsHeaders(resp);
-        resp.setStatus(200);
-    }
-
-    /**
-     * Handles GET requests to retrieve order history.
-     * Expects a {@code userId} query parameter.
-     *
-     * @param req  HttpServletRequest containing {@code userId}.
-     * @param resp HttpServletResponse containing the list of orders in JSON.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-        resp.setContentType("application/json;charset=UTF-8");
-
-        String userId = req.getParameter("userId");
-        if (userId != null) {
-            List<Order> orders = orderDAO.getUserOrders(Long.parseLong(userId));
-            resp.getWriter().write(gson.toJson(orders));
-        }
-    }
-
-    /**
-     * Handles POST requests to create a new order (Checkout).
-     * Requires a JSON body with {@code userId}, {@code address}, {@code phone}, and {@code total}.
-     *
-     * @param req  HttpServletRequest containing order details.
-     * @param resp HttpServletResponse indicating success or failure.
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        setCorsHeaders(resp);
-
-        StringBuilder sb = new StringBuilder();
-        try (java.io.BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
+    @GetMapping
+    public ResponseEntity<?> getUserOrders(@RequestParam Long userId) {
+        if (userId == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "userId is required"));
         }
 
-        JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-        long userId = json.get("userId").getAsLong();
-        String address = json.get("address").getAsString();
-        String phone = json.get("phone").getAsString();
-        BigDecimal total = json.get("total").getAsBigDecimal();
+        List<Order> orders = orderDAO.getUserOrders(userId);
+        return ResponseEntity.ok(orders);
+    }
 
-        if (orderDAO.createOrder(userId, address, phone, total)) {
-            resp.getWriter().write("{\"message\": \"Order created\"}");
-        } else {
-            resp.setStatus(500);
-            resp.getWriter().write("{\"error\": \"Order failed\"}");
+    /**
+     * POST: Create a new order (Checkout).
+     * Expects JSON: { "userId": 1, "address": "...", "phone": "...", "total": 100.50 }
+     */
+    @PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> payload) {
+        try {
+            Long userId = ((Number) payload.get("userId")).longValue();
+            String address = (String) payload.get("address");
+            String phone = (String) payload.get("phone");
+            BigDecimal total = new BigDecimal(payload.get("total").toString());
+
+            orderDAO.createOrder(userId, address, phone, total);
+
+            return ResponseEntity.ok(Map.of("message", "Order created successfully"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", "Order creation failed: " + e.getMessage()));
         }
     }
 }
