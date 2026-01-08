@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Servlet implementation class WishlistServlet.
+ * Servlet implementation class WishlistController.
  * Manages the user's list of favorite products via the endpoint {@code /api/wishlist}.
  * Supported operations:
  * <ul>
@@ -24,7 +24,7 @@ import java.util.List;
  * </ul>
  */
 @WebServlet("/api/wishlist")
-public class WishlistServlet extends HttpServlet {
+public class WishlistController extends HttpServlet {
 
     private WishlistDAO wishlistDAO;
     private Gson gson;
@@ -33,7 +33,7 @@ public class WishlistServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public WishlistServlet() {
+    public WishlistController() {
         this.wishlistDAO = new WishlistDAO();
         this.gson = new Gson();
     }
@@ -45,7 +45,7 @@ public class WishlistServlet extends HttpServlet {
      * @param wishlistDAO Mock or real WishlistDAO.
      * @param gson Mock or real Gson.
      */
-    public WishlistServlet(WishlistDAO wishlistDAO, Gson gson) {
+    public WishlistController(WishlistDAO wishlistDAO, Gson gson) {
         this.wishlistDAO = wishlistDAO;
         this.gson = gson;
     }

@@ -9,17 +9,17 @@ import org.store.service.CurrencyService;
 import java.io.IOException;
 
 @WebServlet("/api/currency")
-public class CurrencyServlet extends HttpServlet {
+public class CurrencyController extends HttpServlet {
 
     private CurrencyService currencyService;
     private Gson gson;
 
-    public CurrencyServlet() {
+    public CurrencyController() {
         this.currencyService = new CurrencyService();
         this.gson = new Gson();
     }
 
-    public CurrencyServlet(CurrencyService currencyService) {
+    public CurrencyController(CurrencyService currencyService) {
         this.currencyService = currencyService;
         this.gson = new Gson();
     }

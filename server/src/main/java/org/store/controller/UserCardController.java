@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Servlet implementation class UserCardServlet.
+ * Servlet implementation class UserCardController.
  * Manages user payment methods via the endpoint {@code /api/cards}.
  * Supported operations:
  * <ul>
@@ -24,7 +24,7 @@ import java.util.List;
  * </ul>
  */
 @WebServlet("/api/cards")
-public class UserCardServlet extends HttpServlet {
+public class UserCardController extends HttpServlet {
     private UserCardDAO cardDAO = new UserCardDAO();
     private Gson gson = new Gson();
 
@@ -32,7 +32,7 @@ public class UserCardServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public UserCardServlet() {
+    public UserCardController() {
         this.cardDAO = new UserCardDAO();
         this.gson = new Gson();
     }
@@ -44,7 +44,7 @@ public class UserCardServlet extends HttpServlet {
      * @param cardDAO Mock or real UserCardDAO.
      * @param gson Mock or real Gson.
      */
-    public UserCardServlet(UserCardDAO cardDAO, Gson gson) {
+    public UserCardController(UserCardDAO cardDAO, Gson gson) {
         this.cardDAO = cardDAO;
         this.gson = gson;
     }

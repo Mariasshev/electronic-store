@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- * Servlet implementation class OrderServlet.
+ * Servlet implementation class OrderController.
  * Manages order processing via the endpoint {@code /api/orders}.
  * Supported operations:
  * <ul>
@@ -25,7 +25,7 @@ import java.util.List;
  * </ul>
  */
 @WebServlet("/api/orders")
-public class OrderServlet extends HttpServlet {
+public class OrderController extends HttpServlet {
     private OrderDAO orderDAO = new OrderDAO();
     private Gson gson = new Gson();
 
@@ -33,7 +33,7 @@ public class OrderServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public OrderServlet() {
+    public OrderController() {
         this.orderDAO = new OrderDAO();
         this.gson = new Gson();
     }
@@ -45,7 +45,7 @@ public class OrderServlet extends HttpServlet {
      * @param orderDAO Mock or real OrderDAO.
      * @param gson Mock or real Gson.
      */
-    public OrderServlet(OrderDAO orderDAO, Gson gson) {
+    public OrderController(OrderDAO orderDAO, Gson gson) {
         this.orderDAO = orderDAO;
         this.gson = gson;
     }

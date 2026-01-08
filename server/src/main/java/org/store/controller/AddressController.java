@@ -1,7 +1,6 @@
 package org.store.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.store.dao.AddressDAO;
 import org.store.model.Address;
 
@@ -26,7 +25,7 @@ import java.util.List;
  * </ul>
  */
 @WebServlet("/api/addresses/*")
-public class AddressServlet extends HttpServlet {
+public class AddressController extends HttpServlet {
 
     private AddressDAO addressDAO = new AddressDAO();
     private Gson gson = new Gson();
@@ -35,7 +34,7 @@ public class AddressServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public AddressServlet() {
+    public AddressController() {
         this.addressDAO = new AddressDAO();
         this.gson = new Gson();
     }
@@ -47,7 +46,7 @@ public class AddressServlet extends HttpServlet {
      * @param addressDAO Mock or real AddressDAO.
      * @param gson Mock or real Gson.
      */
-    public AddressServlet(AddressDAO addressDAO, Gson gson) {
+    public AddressController(AddressDAO addressDAO, Gson gson) {
         this.addressDAO = addressDAO;
         this.gson = gson;
     }

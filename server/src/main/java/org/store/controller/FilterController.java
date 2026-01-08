@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 /**
- * Servlet implementation class FilterServlet.
+ * Servlet implementation class FilterController.
  * Serves dynamic filter options via the endpoint {@code /api/filters}.
  * <p>
  * This servlet is used by the frontend to populate the sidebar filters (Brands, Specifications)
@@ -18,7 +18,7 @@ import java.io.IOException;
  * </p>
  */
 @WebServlet("/api/filters")
-public class FilterServlet extends HttpServlet {
+public class FilterController extends HttpServlet {
     private ProductDAO productDAO = new ProductDAO();
     private Gson gson = new Gson();
 
@@ -26,7 +26,7 @@ public class FilterServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public FilterServlet() {
+    public FilterController() {
         this.productDAO = new ProductDAO();
         this.gson = new Gson();
     }
@@ -38,7 +38,7 @@ public class FilterServlet extends HttpServlet {
      * @param productDAO Mock or real ProductDAO.
      * @param gson Mock or real Gson.
      */
-    public FilterServlet(ProductDAO productDAO, Gson gson) {
+    public FilterController(ProductDAO productDAO, Gson gson) {
         this.productDAO = productDAO;
         this.gson = gson;
     }

@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * Servlet implementation class UserServlet.
+ * Servlet implementation class UserController.
  * Manages user profile operations at the endpoint {@code /api/user}.
  * Supported operations:
  * <ul>
@@ -23,7 +23,7 @@ import java.io.IOException;
  * </ul>
  */
 @WebServlet("/api/user")
-public class UserServlet extends HttpServlet {
+public class UserController extends HttpServlet {
 
     private UserDAO userDAO;
     private Gson gson;
@@ -32,7 +32,7 @@ public class UserServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public UserServlet() {
+    public UserController() {
         this.userDAO = new UserDAO();
         this.gson = new Gson();
     }
@@ -44,7 +44,7 @@ public class UserServlet extends HttpServlet {
      * @param userDAO Mock or real UserDAO.
      * @param gson Mock or real Gson.
      */
-    public UserServlet(UserDAO userDAO, Gson gson) {
+    public UserController(UserDAO userDAO, Gson gson) {
         this.userDAO = userDAO;
         this.gson = gson;
     }

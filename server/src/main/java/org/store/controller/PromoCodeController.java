@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet implementation class PromoCodeServlet.
+ * Servlet implementation class PromoCodeController.
  * Handles promotional code validation via the endpoint {@code /api/promo}.
  * Supported operations:
  * <ul>
@@ -19,7 +19,7 @@ import java.io.IOException;
  * </ul>
  */
 @WebServlet("/api/promo")
-public class PromoCodeServlet extends HttpServlet {
+public class PromoCodeController extends HttpServlet {
     private PromoCodeDAO promoDAO = new PromoCodeDAO();
     private Gson gson = new Gson();
 
@@ -27,7 +27,7 @@ public class PromoCodeServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public PromoCodeServlet() {
+    public PromoCodeController() {
         this.promoDAO = new PromoCodeDAO();
         this.gson = new Gson();
     }
@@ -39,7 +39,7 @@ public class PromoCodeServlet extends HttpServlet {
      * @param promoDAO Mock or real PromoCodeDAO.
      * @param gson Mock or real Gson.
      */
-    public PromoCodeServlet(PromoCodeDAO promoDAO, Gson gson) {
+    public PromoCodeController(PromoCodeDAO promoDAO, Gson gson) {
         this.promoDAO = promoDAO;
         this.gson = gson;
     }

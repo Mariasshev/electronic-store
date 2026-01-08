@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * Servlet implementation class AuthServlet.
+ * Servlet implementation class AuthController.
  * Handles authentication and registration requests via the endpoint {@code /api/auth/*}.
  * Supported routes:
  * <ul>
@@ -22,7 +22,7 @@ import java.io.IOException;
  * </ul>
  */
 @WebServlet("/api/auth/*")
-public class AuthServlet extends HttpServlet {
+public class AuthController extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
     private Gson gson = new Gson();
@@ -31,7 +31,7 @@ public class AuthServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public AuthServlet() {
+    public AuthController() {
         this.userDAO = new UserDAO();
         this.gson = new Gson();
     }
@@ -43,7 +43,7 @@ public class AuthServlet extends HttpServlet {
      * @param userDAO Mock or real UserDAO.
      * @param gson Mock or real Gson.
      */
-    public AuthServlet(UserDAO userDAO, Gson gson) {
+    public AuthController(UserDAO userDAO, Gson gson) {
         this.userDAO = userDAO;
         this.gson = gson;
     }

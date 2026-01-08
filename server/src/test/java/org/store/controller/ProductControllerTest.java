@@ -13,15 +13,14 @@ import org.store.model.Product;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-class ProductServletTest {
+class ProductControllerTest {
 
-    private ProductServlet servlet;
+    private ProductController servlet;
 
     @Mock private ProductDAO productDAO;
     @Mock private HttpServletRequest request;
@@ -30,7 +29,7 @@ class ProductServletTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        servlet = new ProductServlet(productDAO, new Gson());
+        servlet = new ProductController(productDAO, new Gson());
     }
 
     @Test

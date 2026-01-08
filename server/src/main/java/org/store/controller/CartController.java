@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Servlet implementation class CartServlet.
+ * Servlet implementation class CartController.
  * Manages the user's shopping cart via the endpoint {@code /api/cart}.
  * Supported operations:
  * <ul>
@@ -25,7 +25,7 @@ import java.util.List;
  * </ul>
  */
 @WebServlet("/api/cart")
-public class CartServlet extends HttpServlet {
+public class CartController extends HttpServlet {
     private CartDAO cartDAO = new CartDAO();
     private Gson gson = new Gson();
 
@@ -33,7 +33,7 @@ public class CartServlet extends HttpServlet {
      * Default constructor for the Servlet container (Tomcat).
      * Initializes dependencies with real implementations.
      */
-    public CartServlet() {
+    public CartController() {
         this.cartDAO = new CartDAO();
         this.gson = new Gson();
     }
@@ -45,7 +45,7 @@ public class CartServlet extends HttpServlet {
      * @param cartDAO Mock or real CartDAO.
      * @param gson Mock or real Gson.
      */
-    public CartServlet(CartDAO cartDAO, Gson gson) {
+    public CartController(CartDAO cartDAO, Gson gson) {
         this.cartDAO = cartDAO;
         this.gson = gson;
     }

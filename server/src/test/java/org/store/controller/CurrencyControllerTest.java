@@ -16,9 +16,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-class CurrencyServletTest {
+class CurrencyControllerTest {
 
-    private CurrencyServlet servlet;
+    private CurrencyController servlet;
 
     @Mock private CurrencyService currencyService;
     @Mock private HttpServletRequest request;
@@ -27,7 +27,7 @@ class CurrencyServletTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        servlet = new CurrencyServlet(currencyService);
+        servlet = new CurrencyController(currencyService);
     }
 
     @Test

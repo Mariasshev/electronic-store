@@ -1,7 +1,6 @@
 package org.store.controller;
 
 import com.google.gson.Gson;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,18 +10,17 @@ import org.store.model.Product;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Servlet implementation class ProductServlet.
+ * Servlet implementation class ProductController.
  * Handles HTTP requests for Products (/api/products).
  * Supports GET (fetching products) and POST (creating products).
  */
 @WebServlet("/api/products")
-public class ProductServlet extends HttpServlet {
+public class ProductController extends HttpServlet {
 
     private ProductDAO productDAO;
     private Gson gson;
@@ -31,7 +29,7 @@ public class ProductServlet extends HttpServlet {
      * Default constructor for Tomcat container.
      * Initializes DAO and Gson with default implementations.
      */
-    public ProductServlet() {
+    public ProductController() {
         this.productDAO = new ProductDAO();
         this.gson = new Gson();
     }
@@ -41,7 +39,7 @@ public class ProductServlet extends HttpServlet {
      * @param productDAO Mock or real DAO.
      * @param gson Mock or real Gson.
      */
-    public ProductServlet(ProductDAO productDAO, Gson gson) {
+    public ProductController(ProductDAO productDAO, Gson gson) {
         this.productDAO = productDAO;
         this.gson = gson;
     }
@@ -154,7 +152,7 @@ public class ProductServlet extends HttpServlet {
         String searchParam = req.getParameter("q");
         String categoryParam = req.getParameter("categoryId");
 
-        System.out.println("--- ProductServlet GET Request ---");
+        System.out.println("--- ProductController GET Request ---");
         System.out.println("Query String: " + req.getQueryString());
 
         // 1. Пошук
