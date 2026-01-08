@@ -1,45 +1,35 @@
 package org.store.service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.store.dto.CurrencyRate;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CurrencyService {
-    private final OkHttpClient client = new OkHttpClient();
-    private final Gson gson = new Gson();
+
+    // URL API Національного банку України
     private static final String NBU_API_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 
     public List<CurrencyRate> getExchangeRates() {
-        Request request = new Request.Builder()
-                .url(NBU_API_URL)
-                .header("User-Agent", "Mozilla/5.0")
-                .build();
+        RestTemplate restTemplate = new RestTemplate();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful() && response.body() != null) {
-                String json = response.body().string();
+        try {
+            CurrencyRate[] rates = restTemplate.getForObject(NBU_API_URL, CurrencyRate[].class);
 
-                if (!json.startsWith("[")) return new ArrayList<>();
-
-                Type listType = new TypeToken<ArrayList<CurrencyRate>>(){}.getType();
-                List<CurrencyRate> allRates = gson.fromJson(json, listType);
-
-                return allRates.stream()
-                        .filter(r -> r.getCc().equals("USD") || r.getCc().equals("EUR"))
+            if (rates != null) {
+                // USD та EUR
+                return Arrays.stream(rates)
+                        .filter(rate -> "USD".equals(rate.getCc()) || "EUR".equals(rate.getCc()))
                         .collect(Collectors.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+
+        return List.of();
     }
 }
