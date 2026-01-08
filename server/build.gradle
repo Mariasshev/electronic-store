@@ -1,6 +1,7 @@
 plugins {
     id 'java'
-    id 'war'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'org.store'
@@ -17,49 +18,41 @@ repositories {
 }
 
 dependencies {
+    // --- Spring Boot Starters ---
 
+    // Включає: Tomcat (сервер), Spring MVC, Jackson (JSON), REST, Logging
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Включає: Hibernate, JPA, JDBC (для роботи з базою даних)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // --- Database Drivers ---
+
+    // Ваша бібліотека для Oracle (локальний файл)
     implementation files('lib/ojdbc11-21.9.0.0.jar')
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // Spring MVC
-    implementation 'org.springframework:spring-webmvc:6.0.15'
-    implementation 'org.springframework:spring-context:6.0.15'
+    // Якщо захочете перейти на PostgreSQL (рекомендовано), розкоментуйте цей рядок:
+    // runtimeOnly 'org.postgresql:postgresql'
 
-    // JSTL для JSP
-    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0'
-    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+    // --- Utilities ---
 
-    // Servlet API
-    providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    // Lombok: генерує Getters/Setters/Constructors автоматично (через @Data)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-
-    // Логирование
-    implementation 'org.slf4j:slf4j-api:2.0.9'
-    runtimeOnly 'org.slf4j:slf4j-simple:2.0.9'
+    // BCrypt: залишаємо для сумісності з вашою логікою хешування паролів
+    // (хоча в майбутньому краще перейти на Spring Security)
     implementation 'org.mindrot:jbcrypt:0.4'
 
-    implementation 'com.google.code.gson:gson:2.10.1'
-
+    // OkHttp: залишив, якщо ви використовуєте його для зовнішніх запитів
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'
 
+    // --- Testing ---
 
-    // JUnit 5 (Двигун тестів)
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-
-    // Mockito (Для створення фейкових об'єктів DAO/Request)
-    testImplementation 'org.mockito:mockito-core:5.11.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
-
-    // Щоб тестувати сервлети (потрібен сам API)
-    testImplementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    // Включає: JUnit 5, Mockito, AssertJ, Hamcrest (все в одному)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-war {
-    archiveFileName = 'store.war'
-    from('lib') { include '*.jar' }
-}
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
