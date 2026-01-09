@@ -36,6 +36,54 @@ public class ProductController {
         this.productDAO = productDAO;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        Product product = productDAO.findById(id);
+
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.status(404).body(java.util.Map.of("error", "Product not found"));
+        }
+    }
+
+    /**
+     * PUT: Оновити існуючий товар.
+     * URL: /api/products/5
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody org.store.model.Product product) {
+        product.setId(id);
+
+        if (productDAO.updateProduct(product)) {
+            return ResponseEntity.ok(java.util.Map.of("message", "Product updated successfully"));
+        } else {
+            return ResponseEntity.status(500).body(java.util.Map.of("error", "Update failed"));
+        }
+    }
+
+    /**
+     * DELETE: Видалити товар.
+     * URL: /api/products/5
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+        try {
+            if (productDAO.deleteProduct(id)) {
+                return ResponseEntity.ok(java.util.Map.of("message", "Product deleted"));
+            } else {
+                return ResponseEntity.status(404).body(java.util.Map.of("error", "Product not found"));
+            }
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity.status(409).body(java.util.Map.of(
+                    "error", "Cannot delete product because it is part of existing orders."
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(java.util.Map.of("error", "Server error"));
+        }
+    }
+
     /**
      * Handles GET requests to retrieve products.
      * Supports complex filtering logic inherited from the old Servlet.

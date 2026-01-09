@@ -237,19 +237,68 @@ public class ProductDAO {
      * @return The full {@link Product} object or null if not found.
      */
     public Product findById(Long id) {
-        String sql = "SELECT p.*, c.name as category_name, b.name as brand_name " +
-                "FROM elstore_products p " +
-                "LEFT JOIN elstore_categories c ON p.category_id = c.id " +
-                "LEFT JOIN elstore_brands b ON p.brand_id = b.id " +
-                "WHERE p.id = ?";
+        String sql = "SELECT * FROM elstore_products WHERE id = ?";
 
-        List<Product> products = jdbcTemplate.query(sql, productMapper, id);
+        try {
+            // 1. Отримуємо основні дані товару
+            Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                Product p = new Product();
+                p.setId(rs.getLong("id"));
+                p.setName(rs.getString("name"));
+                p.setDescription(rs.getString("description"));
+                p.setPrice(rs.getBigDecimal("price"));
+                p.setStockQuantity(rs.getInt("stock_quantity"));
+                p.setCategoryId(rs.getLong("category_id"));
+                p.setBrandId(rs.getLong("brand_id"));
+                p.setImageUrl(rs.getString("image_url"));
+                return p;
+            }, id);
 
-        if (products.isEmpty()) return null;
+            if (product != null) {
+                // 2. Отримуємо додаткові дані (Галерея, Кольори, Характеристики)
 
-        Product product = products.get(0);
-        loadProductDetails(product); // Fetch related tables
-        return product;
+                product.setGallery(jdbcTemplate.queryForList("SELECT image_url FROM elstore_product_images WHERE product_id = ?", String.class, id));
+
+                // Якщо поки таблиць немає - ініціалізуємо пустими, щоб фронт не впав
+                product.setGallery(new java.util.ArrayList<>());
+                product.setColors(new java.util.ArrayList<>());
+                product.setSpecifications(new java.util.HashMap<>());
+            }
+
+            return product;
+
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE elstore_products SET " +
+                "name = ?, description = ?, price = ?, stock_quantity = ?, " +
+                "category_id = ?, brand_id = ?, image_url = ? " +
+                "WHERE id = ?";
+
+        int rows = jdbcTemplate.update(sql,
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStockQuantity(),
+                product.getCategoryId(),
+                product.getBrandId(),
+                product.getImageUrl(),
+                product.getId()
+        );
+
+        return rows > 0;
+    }
+
+    public boolean deleteProduct(Long id) {
+        jdbcTemplate.update("DELETE FROM elstore_wishlist WHERE product_id = ?", id);
+
+        jdbcTemplate.update("DELETE FROM elstore_product_specs WHERE product_id = ?", id);
+
+        String sql = "DELETE FROM elstore_products WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     /**
