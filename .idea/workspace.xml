@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="fix problems">
+    <list default="true" id="c02e2947-de88-4a12-8a73-cd8eca8467ed" name="Changes" comment="add methods to ProductDao">
       <change afterPath="$PROJECT_DIR$/client/src/app/admin/products/add/page.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/app/admin/products/edit/[id]/page.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/app/admin/products/page.tsx" afterDir="false" />
@@ -27,7 +27,7 @@
       <change beforePath="$PROJECT_DIR$/client/src/app/product/ProductDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/product/ProductDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/product/ProductTop.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/product/ProductTop.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/product/RelatedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/product/RelatedProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/product/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/product/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/product/page.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Discount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Discount.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProductCard.tsx" afterDir="false" />
@@ -35,7 +35,6 @@
       <change beforePath="$PROJECT_DIR$/client/src/components/Submenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Submenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Catalog/FilterSidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/styles/ProductDetails.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/ProductDetails.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/controller/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/store/dao/ProductDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -430,7 +429,7 @@
       <workItem from="1767480178673" duration="4884000" />
       <workItem from="1767490686625" duration="16474000" />
       <workItem from="1767698092284" duration="26600000" />
-      <workItem from="1767882974055" duration="12387000" />
+      <workItem from="1767882974055" duration="13557000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <option name="closed" value="true" />
@@ -624,7 +623,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767907395374</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="fix">
+      <option name="closed" value="true" />
+      <created>1767922602568</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1767922602568</updated>
+    </task>
+    <task id="LOCAL-00026" summary="add methods to ProductDao">
+      <option name="closed" value="true" />
+      <created>1767922640377</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1767922640377</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -667,13 +682,14 @@
     <MESSAGE value="add screenshots" />
     <MESSAGE value="rename" />
     <MESSAGE value="javadoc" />
-    <MESSAGE value="fix" />
     <MESSAGE value="fix Address" />
     <MESSAGE value="set up a connection" />
     <MESSAGE value="add dependencies" />
     <MESSAGE value="add dependencies + fix CurrencyController" />
     <MESSAGE value="fix problems" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix problems" />
+    <MESSAGE value="fix" />
+    <MESSAGE value="add methods to ProductDao" />
+    <option name="LAST_COMMIT_MESSAGE" value="add methods to ProductDao" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/electronic_store$electronic_store.ic" NAME="electronic-store Coverage Results" MODIFIED="1764073942525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

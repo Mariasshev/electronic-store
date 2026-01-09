@@ -240,7 +240,7 @@ public class ProductDAO {
         String sql = "SELECT * FROM elstore_products WHERE id = ?";
 
         try {
-            // 1. Отримуємо основні дані товару
+
             Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
                 Product p = new Product();
                 p.setId(rs.getLong("id"));
@@ -251,18 +251,19 @@ public class ProductDAO {
                 p.setCategoryId(rs.getLong("category_id"));
                 p.setBrandId(rs.getLong("brand_id"));
                 p.setImageUrl(rs.getString("image_url"));
+
+                p.setOldPrice(rs.getObject("old_price", Double.class));
                 return p;
             }, id);
 
             if (product != null) {
-                // 2. Отримуємо додаткові дані (Галерея, Кольори, Характеристики)
 
-                product.setGallery(jdbcTemplate.queryForList("SELECT image_url FROM elstore_product_images WHERE product_id = ?", String.class, id));
-
-                // Якщо поки таблиць немає - ініціалізуємо пустими, щоб фронт не впав
-                product.setGallery(new java.util.ArrayList<>());
-                product.setColors(new java.util.ArrayList<>());
-                product.setSpecifications(new java.util.HashMap<>());
+                loadProductDetails(product);
+//                product.setGallery(jdbcTemplate.queryForList("SELECT image_url FROM elstore_product_images WHERE product_id = ?", String.class, id));
+//
+//                product.setGallery(new java.util.ArrayList<>());
+//                product.setColors(new java.util.ArrayList<>());
+//                product.setSpecifications(new java.util.HashMap<>());
             }
 
             return product;
